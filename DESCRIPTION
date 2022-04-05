@@ -17,6 +17,7 @@ Imports:
     pkgload,
     shiny (>= 1.7.1),
     shinythemes,
+    tibble,
     tidyr
 Encoding: UTF-8
 LazyData: true

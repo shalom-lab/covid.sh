@@ -11,6 +11,7 @@ app_server <- function(input, output, session) {
   library(echarts4r)
   library(leaflet)
   library(purrr)
+  library(tibble)
   # Load Data--------------------------------------------------------------
   data('case.asym')
   data('map.2.new')
@@ -89,12 +90,22 @@ app_server <- function(input, output, session) {
 
   plot.district.cum
   # Leaflet Split -------------------------------------------------------------------
-
   ## goo transfer
 
-
   map.2.new.sp<-split(map.2.new,map.2.new$date)
-  pal <-colorFactor(topo.colors(16),names(map.2.new.sp))
+
+  groups<-names(map.2.new.sp) %>%
+    as_tibble() %>%
+    mutate(date=as.Date(value)) %>%
+    arrange(desc(date)) %>%
+    rownames_to_column(var='id')  %>%
+    mutate(id=as.integer(id)) %>%
+    mutate(group.name=case_when(
+      id<=7~value,
+      T~'七天以前'
+    ))
+
+  pal <-colorFactor(c('#fff5eb','#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#8c2d04'),unique(groups$group.name))
 
   base <-leaflet() %>%
     addTiles(options = providerTileOptions(minZoom = 8)) %>%
@@ -103,29 +114,28 @@ app_server <- function(input, output, session) {
                  lat1 = 31.235988 + .05,
                  lng2 = 121.480473 - .05,
                  lat2 = 31.235988 - .05)  %>%
-    addPolygons(data = shanghai,stroke = T, weight = 1,color = 'blue',smoothFactor = 0.3, fillOpacity = 0.3)
+    addPolygons(data = shanghai,stroke = T, weight = 1,color = '#225ea8',smoothFactor = 0.3, fillOpacity = 0.3)
 
   base
-
 
   names(map.2.new.sp) %>%
     walk(function(df){
       base <<- base %>%
         addCircles(data=map.2.new.sp[[df]],
                    lng=~lng1, lat=~lat1,
-                   label=~date,
+                   label=~paste0(address,'-',date),
                    radius = 50,
                    stroke = F,
-                   color=~pal(df),
+                   color=~pal(groups$group.name[groups$value==df]),
                    fillOpacity = 0.5,
-                   popup=~address,
-                   group = df,
+                   popup=~paste0(address,'-',date),
+                   group = groups$group.name[groups$value==df],
                    labelOptions = labelOptions(noHide = F,direction = 'auto'))
     })
 
   base<- base %>%
     addLayersControl(
-      overlayGroups = names(map.2.new.sp),
+      overlayGroups = unique(groups$group.name),
       options = layersControlOptions(collapsed = FALSE)
     )
 
@@ -280,10 +290,11 @@ app_server <- function(input, output, session) {
   #shiny
   output$introduction <- renderUI(
     tagList(
-      span('数据摘取自上海发布微信公众号','2022.3.17-2022.4.3',tags$strong(style="color:red","同心协力,共克时艰!")),
+      span('2022.3.17日起上海疫情情况，数据摘自上海发布微信公众号',
       span('遇到数据错误请反馈至-'),
       tags$a(href="https://docs.qq.com/form/page/DWEh0V2FCdU5lWW9j", "收集表"),
       span('谢谢您的支持!'),
+      tags$strong(style="color:red","同心协力,共克时艰!")),
     )
   )
   output$plot.district.cum<-renderEcharts4r(plot.district.cum)

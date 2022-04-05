@@ -16,7 +16,7 @@
 ## Dependencies ----
 ## Amend DESCRIPTION with dependencies read from package code parsing
 attachment::att_amend_desc()
-usethis::use_package('sp')
+usethis::use_package('tibble')
 
 
 ## Add modules ----

@@ -13,6 +13,7 @@ app_ui <- function(request) {
       theme = shinythemes::shinytheme("spacelab"),
       "上海新冠疫情概览",
       tabPanel("全市",
+               htmlOutput('introduction'),
                echarts4r::echarts4rOutput('plot.sh.line'),
                echarts4r::echarts4rOutput('plot.sh.bar')
       ),
@@ -27,7 +28,6 @@ app_ui <- function(request) {
                echarts4r::echarts4rOutput('plot.timeline.cum.bar')
       ),
       tabPanel("居住地信息",
-               htmlOutput('introduction'),
                leaflet::leafletOutput('plot.map.location', width = "100%", height = "700px")
       )
     )
