@@ -123,7 +123,7 @@ app_server <- function(input, output, session) {
       base <<- base %>%
         addCircles(data=map.2.new.sp[[df]],
                    lng=~lng1, lat=~lat1,
-                   label=~paste0(address,'-',date),
+                   # label=~paste0(address,'-',date),
                    radius = 50,
                    stroke = F,
                    color=~pal(groups$group.name[groups$value==df]),
