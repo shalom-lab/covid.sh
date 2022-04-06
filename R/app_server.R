@@ -12,6 +12,7 @@ app_server <- function(input, output, session) {
   library(leaflet)
   library(purrr)
   library(tibble)
+  library(covid.sh)
   # Load Data--------------------------------------------------------------
   data('case.asym')
   data('map.2.new')
