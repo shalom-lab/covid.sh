@@ -17,4 +17,5 @@ ADD . /build_zone
 WORKDIR /build_zone
 RUN R -e 'remotes::install_local(upgrade="never")'
 RUN rm -rf /build_zone
-CMD R -e "options('shiny.port'=$PORT,shiny.host='0.0.0.0');covid.sh::run_app()"
+EXPOSE 8090
+CMD R -e "options('shiny.port'=8090,shiny.host='0.0.0.0');covid.sh::run_app()"
