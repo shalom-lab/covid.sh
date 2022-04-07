@@ -3,40 +3,7 @@ library(echarts4r)
 library(leaflet)
 rm(list=ls())
 # Load Data--------------------------------------------------------------
-
 load('./data.rda')
-# Data transfer -----------------------------------------------------------
-
-case.asym.wider <- case.asym %>%
-  mutate(date=as.character(date)) %>%
-  ungroup() %>%
-  pivot_wider(names_from = c(type,group),values_from = n) %>%
-  ungroup() %>%
-  rowwise() %>%
-  replace(is.na(.),0) %>%
-  mutate(case=sum(c_across(starts_with('case_')),na.rm = T),
-         asym=sum(c_across(starts_with('asym_')),na.rm = T)) %>%
-  group_by(district) %>%
-  arrange(district,date) %>%
-  mutate(across(c(starts_with('case'),starts_with('asym')),cumsum,.names = "cum_{.col}"))
-
-# 全市
-names(case.asym.wider)
-case.asym.wider.sh<-case.asym.wider %>%
-  group_by(date) %>%
-  summarise(across(case_isolation:cum_asym,sum,na.rm=T)) %>%
-  mutate(all.new=case+asym,
-         prop.new.case=round(100*case/all.new,1),
-         prop.new.asym=round(100*asym/all.new,1),
-         all.cum=cum_case+cum_asym,
-         prop.cum.case=round(100*cum_case/all.cum,1),
-         prop.cum.asym=round(100*cum_asym/all.cum,1)
-         ) %>%
-  mutate(across(c(case_screen,case_asym,case_isolation),~round(.x*100/case,1),.names = "prop.{col}"),
-         across(c(asym_screen,asym_isolation),~round(.x*100/asym,1),.names = "prop.{col}"),
-         across(c(cum_case_screen,cum_case_asym,cum_case_isolation),~round(.x*100/cum_case,1),.names = "prop.{col}"),
-         across(c(cum_asym_screen,cum_asym_isolation),~round(.x*100/cum_asym,1),.names = "prop.{col}"),
-         )
 
 # yaxis limit
 max.cum.asym.sh<-max(case.asym.wider.sh$cum_asym)
@@ -48,6 +15,7 @@ max.new.case.di<-case.asym.wider %>% group_by(district) %>% slice_max(case,n=1) 
 max.new.asym.di<-case.asym.wider %>% group_by(district) %>% slice_max(asym,n=1) %>% pull(asym) %>% max()
 max.cum.case.di<-case.asym.wider %>% group_by(district) %>% slice_max(cum_case,n=1) %>% pull(cum_asym) %>% max()
 max.cum.asym.di<-case.asym.wider %>% group_by(district) %>% slice_max(cum_asym,n=1) %>% pull(cum_asym) %>% max()
+
 # By district  --------------------------------------------------------------------
 
 plot.district.new<-case.asym.wider %>%
@@ -90,8 +58,7 @@ plot.district.cum<-case.asym.wider %>%
   e_title("累计病例和无症状感染者人数",'左:病例,右:无症状感染者',left='center',top='1%',itemGap=5)
 
 plot.district.cum
-# Leaflet Split -------------------------------------------------------------------
-## goo transfer
+# Leaflet -------------------------------------------------------------------
 
 map.2.new.sp<-split(map.2.new,map.2.new$date)
 
@@ -244,8 +211,8 @@ plot.timeline.cum.bar<-case.asym.wider %>%
 
 plot.timeline.cum.bar
 
-# 全市 ----------------------------------------------------------------------
-# line
+# SH----------------------------------------------------------------------
+## line
 plot.sh.line<-case.asym.wider.sh %>%
   arrange(date) %>%
   e_charts(date) %>%
@@ -267,7 +234,7 @@ plot.sh.line<-case.asym.wider.sh %>%
 
 plot.sh.line
 
-# bar
+## bar
 plot.sh.bar<-case.asym.wider.sh %>%
   arrange(date) %>%
   e_charts(date) %>%
@@ -289,7 +256,7 @@ plot.sh.bar<-case.asym.wider.sh %>%
 plot.sh.bar
 
 
-# case vs asym -------------------------
+# Prop -------------------------
 prop.pos.new<-case.asym.wider.sh %>%
   e_chart(date) %>%
   e_bar(name='病例',prop.new.case,stack='all',
@@ -335,7 +302,8 @@ prop.pos.cum<-case.asym.wider.sh %>%
   )
 
 prop.pos.cum
-# case 构成 -------------------------
+
+# Prop.case -------------------------
 
 prop.case.new<-case.asym.wider.sh %>%
   e_chart(date) %>%
@@ -377,7 +345,7 @@ prop.case.cum<-case.asym.wider.sh %>%
 
 prop.case.cum
 
-# asym 构成 -------------------------
+# Prop.asym -------------------------
 
 prop.asym.new<-case.asym.wider.sh %>%
   e_chart(date) %>%
