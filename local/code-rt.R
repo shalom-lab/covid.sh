@@ -1,17 +1,18 @@
-library(EpiEstim)
 library(tidyverse)
+library(EpiEstim)
 ## load data
-# observation
-SH_obs <- readxl::read_xlsx("SH_Rt_data.xlsx")
-SH_obs <- SH_obs %>%
-  mutate(
-    date = as.Date(date),
-    daily_all_infec = symptomatic + asymptomatic,
-  )
-SH_positive_obs <- SH_obs$daily_all_infec
+load('data.rda')
 
-t_start <- seq(5, length(SH_positive_obs) - 0)
-t_end <- t_start + 0
+# observation
+data<-case.asym.wider %>%
+  filter(district=='青浦区') %>%
+  mutate(date=as.Date(date))
+
+
+SH_positive_obs <- data$pos
+
+t_start <- seq(5, length(SH_positive_obs) - 2)
+t_end <- t_start + 2
 
 Rt_obs <- estimate_R(SH_positive_obs,
                      method="parametric_si",
@@ -20,7 +21,10 @@ Rt_obs <- estimate_R(SH_positive_obs,
                        std_si = 2,#3.4
                        t_start = t_start,
                        t_end = t_end)))
-results_obs <- data.frame(date=SH_obs$date[Rt_obs$R$t_end],
+
+plot(Rt_obs)
+
+results_obs <- data.frame(date=data$date[Rt_obs$R$t_end],
                           meanR=c(Rt_obs$R$`Mean(R)`),
                           lbd=c(Rt_obs$R$`Quantile.0.025(R)`),
                           ubd=c(Rt_obs$R$`Quantile.0.975(R)`))

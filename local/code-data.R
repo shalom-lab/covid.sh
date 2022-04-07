@@ -96,7 +96,7 @@ rmarkdown::render('./index.Rmd',output_file = "./index.html")
 file.copy('./index.html','../www/index.html',overwrite = T)
 
 # git push
-shell('git add . ')
+
 
 
 
