@@ -1,0 +1,14 @@
+name: covid-sh
+title: covid-sh
+username:
+account: learn-r
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6005784
+bundleId: 5763036
+url: https://learn-r.shinyapps.io/covid-sh/
+when: 1649083975.43266
+lastSyncTime: 1649083975.43266
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .RData|code-data-prepare.R|code1.R|Dockerfile

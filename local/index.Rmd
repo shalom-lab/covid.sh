@@ -1,0 +1,137 @@
+---
+title: "上海新冠疫情概况"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    theme: readable
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+source('./code-plot.R',encoding='utf-8')
+```
+
+# 全市
+
+
+Column {}
+-----------------------------------------------------------------------
+
+### 数据摘自上海发布 [同心协力,共克时艰](https://docs.qq.com/form/page/DWEh0V2FCdU5lWW9j)
+
+```{r}
+plot.sh.line
+```
+
+### 
+
+```{r}
+plot.sh.bar
+```
+
+
+# 新增及累计
+
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+###  新增
+
+```{r}
+plot.district.new
+
+```
+
+### 累计
+```{r}
+plot.district.cum
+```
+
+# 各区情况
+
+
+Column { .tabset }
+-----------------------------------------------------------------------
+
+### 新增
+
+```{r}
+plot.timeline.new
+
+```
+
+### 新增构成
+
+```{r}
+plot.timeline.new.bar
+
+```
+
+### 累计
+
+```{r}
+plot.timeline.cum
+```
+
+### 累计构成
+
+```{r}
+plot.timeline.cum.bar
+```
+
+
+# 构成情况
+
+    
+Column {data-width=333}
+-------------------------------------
+    
+### 阳性新增
+    
+```{r}
+prop.pos.new
+```
+
+### 阳性累计
+    
+```{r}
+prop.pos.cum
+```
+Column {data-width=333}
+-------------------------------------
+   
+### 病例新增
+
+```{r}
+prop.case.new
+```   
+ 
+### 病例累计
+    
+```{r}
+prop.case.cum
+```
+无症状 {data-width=333}
+-------------------------------------
+   
+### 无症状新增
+
+```{r}
+prop.asym.new
+```   
+ 
+### 无症状累计
+    
+```{r}
+prop.asym.cum
+```
+
+# 居住地信息
+
+
+```{r}
+plot.map.location
+
+```
