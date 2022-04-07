@@ -7,8 +7,8 @@ future::plan(multisession)
 
 # VARIABLE
 v.date<-'2022-04-06'
-v.url.case<-'https://mp.weixin.qq.com/s/knbDe8_s_1POJJnXDmBVXA'
-v.url.location<-'https://mp.weixin.qq.com/s/djwW3S9FUYBE2L5Hj94a3A'
+v.url.case<-'https://mp.weixin.qq.com/s/6ZmYd30MvJIltQIre6XMvA'
+v.url.location<-'https://mp.weixin.qq.com/s/8bljTUplPh1q4MXb6wd_gg'
 v.baiduapi<-'https://api.map.baidu.com/geocoding/v3/?address=ADDRESS&output=json&ak=GwzPkV44UAHW3f9gnhT80ZsLLy3zpSI6'
 
 # Tools
@@ -44,8 +44,8 @@ df.asym.1<-data.frame(text=html.case %>% html_elements('p') %>% html_text()) %>%
          date=ymd(v.date))
 
 # fill group
-df.case.1$group<-mf.tag(c('isolation','screen','asym'),c(1,5,20),32)
-df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,17),31)
+df.case.1$group<-mf.tag(c('isolation','screen','asym'),c(1,7,21),26)
+df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,17),32)
 
 df.case.2 <-df.case.1 %>%
   select(date,district,group,n)
@@ -62,13 +62,13 @@ df.map.1<-html.location %>% html_elements('section > p ') %>% html_text() %>%
   rownames_to_column(var = 'id') %>%
   mutate(id=as.integer(id),
          wordcount=str_count(value),
-         districtIndex=str_detect(value,'2022年4月5日')) %>%
+         districtIndex=str_detect(value,'2022年4月6日')) %>%
   arrange(-wordcount)
 
 df.map.2<-df.map.1 %>%
   filter(wordcount>2,
          value!='已对相关居住地落实终末消毒措施。',
-         value!='（滑动查看更多↓）') %>%
+         value!='（滑动查看更多↓）')  %>%
   slice(-1) %>%
   arrange(id) %>%
   slice(-1) %>%
