@@ -1,7 +1,12 @@
+library(tidyverse)
+library(EpiEstim)
+
 # NOT RUN {
 ## load data on pandemic flu in a school in 2009
 data("Flu2009")
 
+Flu2009$incidence
+Flu2009$si_distr
 ## estimate the reproduction number (method "non_parametric_si")
 ## when not specifying t_start and t_end in config, they are set to estimate
 ## the reproduction number on sliding weekly windows

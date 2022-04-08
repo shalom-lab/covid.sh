@@ -6,7 +6,7 @@ library(jsonlite)
 future::plan(multisession)
 
 # VARIABLE
-v.date<-'2022-04-07'
+v.date<-'2022-04-06'
 v.url.case<-'https://mp.weixin.qq.com/s/6ZmYd30MvJIltQIre6XMvA'
 v.url.location<-'https://mp.weixin.qq.com/s/8bljTUplPh1q4MXb6wd_gg'
 v.baiduapi<-'https://api.map.baidu.com/geocoding/v3/?address=ADDRESS&output=json&ak=GwzPkV44UAHW3f9gnhT80ZsLLy3zpSI6'
@@ -62,7 +62,7 @@ df.map.1<-html.location %>% html_elements('section > p ') %>% html_text() %>%
   rownames_to_column(var = 'id') %>%
   mutate(id=as.integer(id),
          wordcount=str_count(value),
-         districtIndex=str_detect(value,'2022年4月7日')) %>%
+         districtIndex=str_detect(value,'2022年4月6日')) %>%
   arrange(-wordcount)
 
 df.map.2<-df.map.1 %>%

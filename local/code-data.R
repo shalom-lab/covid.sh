@@ -95,7 +95,6 @@ save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,file='../data-raw/dat
 rmarkdown::render('./index.Rmd',output_file = "./index.html")
 file.copy('./index.html','../www/index.html',overwrite = T)
 
-# git push
 
 
 

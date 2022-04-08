@@ -128,7 +128,7 @@ prop.asym.new
 prop.asym.cum
 ```
 
-# 居住地信息1
+# 居住地信息
 
 
 ```{r}
