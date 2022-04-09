@@ -4,21 +4,38 @@ library(EpiEstim)
 load('data.rda')
 
 # observation
-data<-case.asym.wider %>%
-  filter(district=='青浦区') %>%
-  mutate(date=as.Date(date))
+cases<-case.asym.wider.sh %>%
+  select(date,pos) %>%
+  mutate(date=as.Date(date)) %>%
+  rename(I=pos,dates=date)
 
+## make config
+config_lit <- make_config(
+  mean_si = 4,
+  std_si = 1,
+  t_start = t_start,
+  t_end = t_end
+)
+
+## estimate
+epiestim_res_lit <- estimate_R(
+  incid = cases,
+  method = "parametric_si",
+  config = config_lit
+)
+
+plot(epiestim_res_lit)
 
 SH_positive_obs <- data$pos
 
-t_start <- seq(5, length(SH_positive_obs) - 2)
-t_end <- t_start + 2
+t_start <- seq(5, length(SH_positive_obs) - 7)
+t_end <- t_start + 7
 
 Rt_obs <- estimate_R(SH_positive_obs,
                      method="parametric_si",
                      config = make_config(list(
-                       mean_si = 4.5,#7.5
-                       std_si = 2,#3.4
+                       mean_si = 4,#7.5
+                       std_si = 1,#3.4
                        t_start = t_start,
                        t_end = t_end)))
 
@@ -48,4 +65,4 @@ ggplot(data = results_obs,aes(x=date,y=meanR))+
         strip.background = element_blank(),
         strip.text = element_text(size=20,colour = "black")
   )
-ggsave(filename = "SH_Rt.png",width = 16,height = 9,dpi = 300)
+# ggsave(filename = "SH_Rt.png",width = 16,height = 9,dpi = 300)
