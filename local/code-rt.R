@@ -9,6 +9,8 @@ cases<-case.asym.wider.sh %>%
   mutate(date=as.Date(date)) %>%
   rename(I=pos,dates=date)
 
+t_start=1:(dim(cases)[1]-1)
+t_end=t_start+1
 ## make config
 config_lit <- make_config(
   mean_si = 4,
@@ -16,6 +18,7 @@ config_lit <- make_config(
   t_start = t_start,
   t_end = t_end
 )
+
 
 ## estimate
 epiestim_res_lit <- estimate_R(

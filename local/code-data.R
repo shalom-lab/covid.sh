@@ -92,7 +92,7 @@ save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,file='./data.rda')
 save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,file='../data-raw/data.rda')
 
 # render
-rmarkdown::render('./index.Rmd',output_file = "./index.html")
+rmarkdown::render('./index.Rmd',output_file = paste0('../www/archive/',Sys.Date()-1,'.html'))
 file.copy('./index.html','../www/index.html',overwrite = T)
 
 
