@@ -9,8 +9,11 @@ cases<-case.asym.wider.sh %>%
   mutate(date=as.Date(date)) %>%
   rename(I=pos,dates=date)
 
-t_start=1:(dim(cases)[1]-1)
-t_end=t_start+1
+t_start=5:(dim(cases)[1])
+t_end=t_start+7
+
+t_start
+t_end
 ## make config
 config_lit <- make_config(
   mean_si = 4,
@@ -31,9 +34,6 @@ plot(epiestim_res_lit)
 
 SH_positive_obs <- data$pos
 
-t_start <- seq(5, length(SH_positive_obs) - 7)
-t_end <- t_start + 7
-
 Rt_obs <- estimate_R(SH_positive_obs,
                      method="parametric_si",
                      config = make_config(list(
@@ -43,11 +43,6 @@ Rt_obs <- estimate_R(SH_positive_obs,
                        t_end = t_end)))
 
 plot(Rt_obs)
-
-results_obs <- data.frame(date=data$date[Rt_obs$R$t_end],
-                          meanR=c(Rt_obs$R$`Mean(R)`),
-                          lbd=c(Rt_obs$R$`Quantile.0.025(R)`),
-                          ubd=c(Rt_obs$R$`Quantile.0.975(R)`))
 
 ggplot(data = results_obs,aes(x=date,y=meanR))+
   geom_ribbon(aes(ymin=lbd,ymax=ubd),fill= "#AD002AFF",alpha=0.2)+
