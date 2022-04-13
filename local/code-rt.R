@@ -1,5 +1,6 @@
 library(tidyverse)
 library(EpiEstim)
+library(ggpubr)
 ## load data
 load('data.rda')
 
@@ -9,58 +10,52 @@ cases<-case.asym.wider.sh %>%
   mutate(date=as.Date(date)) %>%
   rename(I=pos,dates=date)
 
-t_start=5:(dim(cases)[1])
-t_end=t_start+7
-
-t_start
-t_end
 ## make config
-config_lit <- make_config(
+config <- make_config(
   mean_si = 4,
-  std_si = 1,
-  t_start = t_start,
-  t_end = t_end
+  std_si = 2
 )
 
 
 ## estimate
-epiestim_res_lit <- estimate_R(
+res <- estimate_R(
   incid = cases,
   method = "parametric_si",
-  config = config_lit
+  config = config
 )
 
-plot(epiestim_res_lit)
+plot(res)
 
-SH_positive_obs <- data$pos
+res.r<-res$R %>% as_tibble() %>%
+  rename(mean=`Mean(R)`,std=`Std(R)`,lbd=`Quantile.0.025(R)`,ubd=`Quantile.0.975(R)`) %>%
+  mutate(date=cases$dates[res$R$t_end])
 
-Rt_obs <- estimate_R(SH_positive_obs,
-                     method="parametric_si",
-                     config = make_config(list(
-                       mean_si = 4,#7.5
-                       std_si = 1,#3.4
-                       t_start = t_start,
-                       t_end = t_end)))
+res.si <- as_tibble(list(time=as.integer(str_sub(names(res$si_distr),2)),
+                                         frequency=as.vector(res$si_distr)))
 
-plot(Rt_obs)
+p1<-ggplot(data = cases,aes(x=dates,y=I))+
+  geom_col(fill= "#AD002AFF")+
+  scale_x_date(date_breaks = "2 days",date_labels = "%m/%d",expand = c(0,0.5))+
+  labs(x="Date (2022)",y="Daily Positive",title="Epidemic curve")+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle=45,vjust=0.5,hjust = 0.5))
+p1
 
-ggplot(data = results_obs,aes(x=date,y=meanR))+
+p2<-ggplot(data = res.r,aes(x=date,y=mean))+
   geom_ribbon(aes(ymin=lbd,ymax=ubd),fill= "#AD002AFF",alpha=0.2)+
   geom_line(size=1,colour= "#AD002AFF")+
   geom_hline(yintercept = 1,size=1,lty=2)+
-  scale_x_date(date_breaks = "2 days",date_labels = "%m/%d",expand = c(0,0))+
-  labs(x="Date (2022)",y="Estimated Rt")+
-  theme(legend.title = element_blank(),legend.position = c(0.85,0.95),
-        legend.background = element_blank(),legend.key.size = unit(15,"pt"),
-        legend.key = element_blank(),legend.text=element_text(size=15,hjust = 0),
-        axis.text = element_text(size = 20,colour = "black"),
-        axis.title = element_text(size=20,color = "black"),
-        axis.line = element_line(colour = "black",size = 1),
-        axis.ticks = element_line(color = "black",size = 1),
-        panel.background = element_blank(),panel.grid = element_line(colour = "grey"),
-        panel.border = element_rect(fill = NA,size = 1,colour = "black"),
-        plot.margin=unit(rep(2,4),'lines'),
-        strip.background = element_blank(),
-        strip.text = element_text(size=20,colour = "black")
-  )
-# ggsave(filename = "SH_Rt.png",width = 16,height = 9,dpi = 300)
+  scale_x_date(date_breaks = "2 days",date_labels = "%m/%d",expand = c(0,0.5),limits = c(as.Date('2022-03-09'),Sys.Date()-1))+
+  labs(x="Date (2022)",y="Rt",title='Estimated Rt')+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle=45,vjust=0.5,hjust = 0.5))
+p2
+
+p3<-ggplot(data = res.si,aes(x=time,y=frequency))+
+  geom_line()+
+  labs(x="Time",y="Frequency",title='Serial Interval Distribution')+
+  theme_bw()
+
+plot.rt<-ggarrange(p1,p2,p3,ncol=1)
+plot.rt
+

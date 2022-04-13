@@ -10,6 +10,7 @@ output:
 ```{r setup, include=FALSE}
 library(flexdashboard)
 source('./code-plot.R',encoding='utf-8')
+source('./code-rt.R',encoding='utf-8')
 ```
 
 # 全市
@@ -136,3 +137,10 @@ plot.map.location
 
 ```
 
+# Rt
+
+
+```{r}
+plot.rt
+
+```
