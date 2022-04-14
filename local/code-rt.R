@@ -53,7 +53,7 @@ p2
 
 p3<-ggplot(data = res.si,aes(x=time,y=frequency))+
   geom_line()+
-  labs(x="Time",y="Frequency",title='Serial Interval Distribution')+
+  labs(x="Time",y="Frequency",title='Assumptive Serial Interval Distribution')+
   theme_bw()
 
 plot.rt<-ggarrange(p1,p2,p3,ncol=1)
