@@ -24,7 +24,7 @@ plot.district.new<-case.asym.wider %>%
   e_charts(date) %>%
   e_bar(case,stack="case") %>%
   e_bar(asym,stack="asym") %>%
-  e_x_axis(axisLabel = list(interval = 0, rotate = 45)) %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
   e_y_axis(name='每日新增数',nameLocation='end',nameGap=20,max=max.new.asym.sh,axisLine=list(show=T),axisTick=list(show=T)) %>%
   e_tooltip(
     trigger = 'item',
@@ -35,6 +35,8 @@ plot.district.new<-case.asym.wider %>%
   ) %>%
   e_grid(top='20%') %>%
   e_legend(top='10%') %>%
+  e_datazoom(type='inside') %>%
+  e_datazoom(type='slider') %>%
   e_title("每日新增病例和无症状感染者人数",'左:病例,右:无症状感染者',left='center',top='1%',itemGap=5)
 
 plot.district.new
@@ -45,8 +47,8 @@ plot.district.cum<-case.asym.wider %>%
   e_charts(date) %>%
   e_bar(cum_case,stack="case") %>%
   e_bar(cum_asym,stack="asym") %>%
-  e_x_axis(axisLabel = list(interval = 0, rotate = 45)) %>%
-  e_y_axis(name='累计人数',nameLocation='end',nameGap=20,max=max.cum.asym.sh,axisLine=list(show=T),axisTick=list(show=T)) %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
+  e_y_axis(name='累计人数',nameLocation='end',nameGap=20,axisTick=list(show=T)) %>%
   e_tooltip(
     trigger = 'item',
     axisPointer = list(
@@ -56,6 +58,8 @@ plot.district.cum<-case.asym.wider %>%
   ) %>%
   e_grid(top='23%') %>%
   e_legend(top='10%') %>%
+  e_datazoom(type='inside') %>%
+  e_datazoom(type='slider') %>%
   e_title("累计病例和无症状感染者人数",'左:病例,右:无症状感染者',left='center',top='1%',itemGap=5)
 
 plot.district.cum
@@ -120,7 +124,7 @@ plot.timeline.new<-case.asym.wider %>%
   e_line(name="新增病例数",case,y_index = 0) %>%
   e_line(name="新增无症状",asym,y_index = 0) %>%
   e_grid(right='18%') %>%
-  e_x_axis(axisLabel = list(interval = 0, rotate = 45)) %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
   e_y_axis(name='每日新增',nameLocation='end',nameGap=20,max=max.new.asym.di,axisLine=list(show=T),axisTick=list(show=T)) %>%
   e_tooltip(
     trigger = 'axis',
@@ -141,7 +145,7 @@ plot.timeline.cum<-case.asym.wider %>%
   e_line(name="累计病例数",cum_case) %>%
   e_line(name="累计无症状",cum_asym) %>%
   e_grid(left='10%',right='18%') %>%
-  e_x_axis(axisLabel = list(interval = 0, rotate = 45)) %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
   e_y_axis(name='累计人数',nameLocation='end',nameGap=20,max=max.cum.asym.di,axisLine=list(show=T),axisTick=list(show=T)) %>%
   e_tooltip(
     trigger = 'axis',
@@ -166,7 +170,7 @@ plot.timeline.new.bar<-case.asym.wider %>%
   e_bar(name="病例-转自无症状",case_asym,stack="case") %>%
   e_bar(name="无症状-隔离管控",asym_isolation,stack="asym") %>%
   e_bar(name="无症状-筛查发现",asym_screen,stack="asym") %>%
-  e_x_axis(axisLabel = list(interval = 0, rotate = 45)) %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
   e_y_axis(index=0,name='人数',nameLocation='end',nameGap=20,max=max.new.asym.di,axisLine=list(show=T),axisTick=list(show=T)) %>%
   e_tooltip(
     trigger = 'axis',
@@ -194,7 +198,7 @@ plot.timeline.cum.bar<-case.asym.wider %>%
   e_bar(name="病例-转自无症状",cum_case_asym,stack="case") %>%
   e_bar(name="无症状-隔离管控",cum_asym_isolation,stack="asym") %>%
   e_bar(name="无症状-筛查发现",cum_asym_screen,stack="asym") %>%
-  e_x_axis(axisLabel = list(interval = 0, rotate = 45)) %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
   e_y_axis(index=0,name='人数',nameLocation='end',nameGap=20,max=max.cum.asym.di,axisLine=list(show=T),axisTick=list(show=T)) %>%
   e_tooltip(
     trigger = 'axis',
@@ -222,8 +226,10 @@ plot.sh.line<-case.asym.wider.sh %>%
   e_line(name="累计病例数",cum_case,y_index = 0) %>%
   e_line(name="累计无症状",cum_asym,y_index = 0) %>%
   e_grid(right='18%') %>%
-  e_x_axis(axisLabel = list(interval = 0, rotate = 45)) %>%
-  e_y_axis(index=0,name='人数',nameLocation='end',nameGap=20,max=max.cum.asym.sh,axisLine=list(show=T),axisTick=list(show=T)) %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
+  e_y_axis(index=0,name='人数',nameLocation='end',nameGap=20,
+           #max=max.cum.asym.sh,
+           axisLine=list(show=T),axisTick=list(show=T)) %>%
   e_tooltip(
     trigger = 'axis',
     axisPointer = list(
@@ -231,6 +237,8 @@ plot.sh.line<-case.asym.wider.sh %>%
       axis='x'
     )
   ) %>%
+  e_datazoom(type='inside') %>%
+  e_datazoom(type='slider') %>%
   e_labels()
 
 plot.sh.line
@@ -244,8 +252,12 @@ plot.sh.bar<-case.asym.wider.sh %>%
   e_bar(name="累计病例数",barCategoryGap='2%',cum_case,y_index = 0) %>%
   e_bar(name="累计无症状",barCategoryGap='2%',cum_asym,y_index = 0) %>%
   e_grid(right='18%') %>%
-  e_x_axis(axisLabel = list(interval = 0, rotate = 45)) %>%
-  e_y_axis(index=0,name='人数',nameLocation='end',nameGap=20,max=max.cum.asym.sh,axisLine=list(show=T),axisTick=list(show=T)) %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
+  e_y_axis(index=0,name='人数',nameLocation='end',nameGap=20,
+           #max=max.cum.asym.sh,
+           axisLine=list(show=T),axisTick=list(show=T)) %>%
+  e_datazoom(type='inside') %>%
+  e_datazoom(type='slider') %>%
   e_tooltip(
     trigger = 'axis',
     axisPointer = list(
@@ -267,10 +279,12 @@ prop.pos.new<-case.asym.wider.sh %>%
         )) %>%
   e_bar(name='无症状感染者',prop.new.asym,stack='all') %>%
   e_y_axis(name='百分比',nameLocation='end',nameGap=20,axisLine=list(show=T),axisTick=list(show=T)) %>%
-  e_x_axis(axisLabel = list(interval = 0, rotate = 45)) %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
   e_title("每日新增阳性人员构成比",left='center',top='2%',itemGap=5) %>%
   e_legend(top='10%') %>%
   e_grid(top='20%') %>%
+  # e_datazoom(type='inside') %>%
+  # e_datazoom(type='slider') %>%
   e_tooltip(
     trigger = 'axis',
     axisPointer = list(
@@ -290,10 +304,12 @@ prop.pos.cum<-case.asym.wider.sh %>%
         )) %>%
   e_bar(name='无症状感染者',prop.cum.asym,stack='all') %>%
   e_y_axis(name='百分比',nameLocation='end',nameGap=20,axisLine=list(show=T),axisTick=list(show=T)) %>%
-  e_x_axis(axisLabel = list(interval = 0, rotate = 45)) %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
   e_title("累计阳性人员构成比",left='center',top='2%',itemGap=5) %>%
   e_legend(top='10%') %>%
   e_grid(top='20%') %>%
+  # e_datazoom(type='inside') %>%
+  # e_datazoom(type='slider') %>%
   e_tooltip(
     trigger = 'axis',
     axisPointer = list(
@@ -312,10 +328,12 @@ prop.case.new<-case.asym.wider.sh %>%
   e_bar(name='筛查发现',prop.case_screen,stack='all') %>%
   e_bar(name='转自无症状',prop.case_asym,stack='all') %>%
   e_y_axis(name='百分比',nameLocation='end',max=100,nameGap=20,axisLine=list(show=T),axisTick=list(show=T)) %>%
-  e_x_axis(axisLabel = list(interval = 0, rotate = 45)) %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
   e_title("每日新增病例来源构成",left='center',top='2%',itemGap=5) %>%
   e_legend(top='10%') %>%
   e_grid(top='20%') %>%
+  # e_datazoom(type='inside') %>%
+  # e_datazoom(type='slider') %>%
   e_tooltip(
     trigger = 'axis',
     axisPointer = list(
@@ -332,10 +350,12 @@ prop.case.cum<-case.asym.wider.sh %>%
   e_bar(name='筛查发现',prop.cum_case_screen,stack='all') %>%
   e_bar(name='转自无症状',prop.cum_case_asym,stack='all') %>%
   e_y_axis(name='百分比',nameLocation='end',max=100,nameGap=20,axisLine=list(show=T),axisTick=list(show=T)) %>%
-  e_x_axis(axisLabel = list(interval = 0, rotate = 45)) %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
   e_title("累计病例来源构成",left='center',top='2%',itemGap=5) %>%
   e_legend(top='10%') %>%
   e_grid(top='20%') %>%
+  # e_datazoom(type='inside') %>%
+  # e_datazoom(type='slider') %>%
   e_tooltip(
     trigger = 'axis',
     axisPointer = list(
@@ -356,10 +376,12 @@ prop.asym.new<-case.asym.wider.sh %>%
   )) %>%
   e_bar(name='筛查发现',prop.asym_screen,stack='all') %>%
   e_y_axis(name='百分比',nameLocation='end',max=100,nameGap=20,axisLine=list(show=T),axisTick=list(show=T)) %>%
-  e_x_axis(axisLabel = list(interval = 0, rotate = 45)) %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
   e_title("每日新增无症状感染者来源构成",left='center',top='2%',itemGap=5) %>%
   e_legend(top='10%') %>%
   e_grid(top='20%') %>%
+  # e_datazoom(type='inside') %>%
+  # e_datazoom(type='slider') %>%
   e_tooltip(
     trigger = 'axis',
     axisPointer = list(
@@ -378,10 +400,12 @@ prop.asym.cum<-case.asym.wider.sh %>%
   )) %>%
   e_bar(name='筛查发现',prop.asym_screen,stack='all') %>%
   e_y_axis(name='百分比',nameLocation='end',max=100,nameGap=20,axisLine=list(show=T),axisTick=list(show=T)) %>%
-  e_x_axis(axisLabel = list(interval = 0, rotate = 45)) %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
   e_title("累计无症状感染者来源构成",left='center',top='2%',itemGap=5) %>%
   e_legend(top='10%') %>%
   e_grid(top='20%') %>%
+  # e_datazoom(type='inside') %>%
+  # e_datazoom(type='slider') %>%
   e_tooltip(
     trigger = 'axis',
     axisPointer = list(
