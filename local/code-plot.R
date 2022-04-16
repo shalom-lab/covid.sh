@@ -1,7 +1,6 @@
 library(tidyverse)
 library(echarts4r)
 library(leaflet)
-library(leaflet.extras)
 rm(list=ls())
 # Load Data--------------------------------------------------------------
 load('./data.rda')
