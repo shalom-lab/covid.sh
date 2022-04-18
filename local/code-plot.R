@@ -3,7 +3,7 @@ library(echarts4r)
 library(leaflet)
 rm(list=ls())
 # Load Data--------------------------------------------------------------
-load('./data.rda')
+load('./share/data.rda')
 
 # yaxis limit
 max.cum.asym.sh<-max(case.asym.wider.sh$cum_asym)
