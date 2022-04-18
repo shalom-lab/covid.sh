@@ -9,9 +9,9 @@ rm(list=ls())
 # VARIABLE
 df.url<-readRDS('data/df.url.RDS')
 df.url<-df.url %>%
-  bind_rows(c(v.date='2022-04-16',
-            v.url.case='https://mp.weixin.qq.com/s/9YaDe0nseAmv58IwTQfakQ',
-            v.url.location='https://mp.weixin.qq.com/s/dRa-PExJr1qkRis88eGCnQ')) %>%
+  bind_rows(c(v.date='2022-04-17',
+            v.url.case='https://mp.weixin.qq.com/s/wuZXG2rdCKi-A5sZQJdKfA',
+            v.url.location='https://mp.weixin.qq.com/s/LguiUZj-zxy4xy19WO0_UA')) %>%
   distinct(v.date,.keep_all = T) %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
