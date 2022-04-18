@@ -1,8 +1,8 @@
 library(tidyverse)
 library(EpiEstim)
-library(ggpubr)
+library(patchwork)
 ## load data
-load('data.rda')
+load('./share/data.rda')
 
 # observation
 cases<-case.asym.wider.sh %>%
@@ -56,6 +56,5 @@ p3<-ggplot(data = res.si,aes(x=time,y=frequency))+
   labs(x="Time",y="Frequency",title='Assumptive Serial Interval Distribution')+
   theme_bw()
 
-plot.rt<-ggarrange(p1,p2,p3,ncol=1)
-plot.rt
+p1+p2+p3+plot_layout(ncol = 1)
 
