@@ -16,7 +16,6 @@ config <- make_config(
   std_si = 2
 )
 
-
 ## estimate
 res <- estimate_R(
   incid = cases,
