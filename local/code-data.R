@@ -86,7 +86,10 @@ map.2.new<-fromJSON('./data/map.2.new.json')
 shanghai<-geojson_read('./data/shanghai.json',what = "sp")
 
 # save rda
-save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,file='./data.rda')
+save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,file='./share/data.rda')
+write.csv(case.asym.wider,'./share/case.asym.wider.csv',row.names = F)
+write.csv(case.asym.wider.sh,'./share/case.asym.wider.sh.csv',row.names = F)
+write.csv(map.2.new,'./share/map.2.new.csv',row.names = F)
 
 # for shiny
 save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,file='../data-raw/data.rda')

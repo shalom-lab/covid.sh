@@ -137,10 +137,21 @@ plot.map.location
 
 ```
 
-# Rt
+# 流行趋势
 
-
+Column { data-width=800 }
+-------------------------
+### 时变再生数Rt [阅读原文](https://blog-7gi7tsfg85e1922f-1257749604.ap-shanghai.app.tcloudbase.com/posts/epi/covid-rt.html)
 ```{r}
 plot.rt
+
+```
+
+Column { data-width=400 }
+-------------------------
+### 系列间隔SI(假设)
+
+```{r}
+plot.si
 
 ```
