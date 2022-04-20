@@ -8,7 +8,7 @@ load('./share/data.rda')
 cases<-case.asym.wider.sh %>%
   select(date,pos) %>%
   mutate(date=as.Date(date)) %>%
-  rename(I=pos,dates=date)
+  rename(I=pos_real,dates=date)
 
 ## make config
 config <- make_config(
