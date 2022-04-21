@@ -51,7 +51,8 @@ case.asym.wider <- case.asym %>%
   replace(is.na(.),0) %>%
   mutate(case=sum(c_across(starts_with('case_')),na.rm = T),
          asym=sum(c_across(starts_with('asym_')),na.rm = T),
-         pos=case+asym) %>%
+         pos=case+asym,
+         pos_real=pos-case_asym) %>%
   group_by(district) %>%
   arrange(district,date) %>%
   mutate(across(c(starts_with('case'),starts_with('asym'),pos),cumsum,.names = "cum_{.col}"))
