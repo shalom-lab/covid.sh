@@ -9,9 +9,9 @@ rm(list=ls())
 # VARIABLE
 df.url<-readRDS('data/df.url.RDS')
 df.url<-df.url %>%
-  bind_rows(c(v.date='2022-04-22',
-            v.url.case='https://mp.weixin.qq.com/s/xxXPs9eVCdfm9yrjbt9mNQ',
-            v.url.location='https://mp.weixin.qq.com/s/LySBR0VJswl_ZI1KtWlXqw')) %>%
+  bind_rows(c(v.date='2022-04-24',
+            v.url.case='https://mp.weixin.qq.com/s/Dm0pjazKR_Fxb8-jScmmvA',
+            v.url.location='https://mp.weixin.qq.com/s/9-DRQF8pbz_2uivgscOmbw')) %>%
   distinct(v.date,.keep_all = T) %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
@@ -53,7 +53,7 @@ df.asym.1<-data.frame(text=html.case %>% html_elements('p') %>% html_text()) %>%
          date=ymd(v.date))
 
 # fill group
-df.case.1$group<-mf.tag(c('isolation','screen','asym'),c(1,16,29),43)
+df.case.1$group<-mf.tag(c('isolation','screen','asym'),c(1,15,27),41)
 df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,17),30)
 
 df.case.2 <-df.case.1 %>%
