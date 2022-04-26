@@ -53,8 +53,8 @@ df.asym.1<-data.frame(text=html.case %>% html_elements('p') %>% html_text()) %>%
          date=ymd(v.date))
 
 # fill group
-df.case.1$group<-mf.tag(c('isolation','screen','asym'),c(1,15,27),41)
-df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,17),30)
+df.case.1$group<-mf.tag(c('isolation','screen','asym'),c(1,15,25),37)
+df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,17),29)
 
 df.case.2 <-df.case.1 %>%
   select(date,district,group,n)
