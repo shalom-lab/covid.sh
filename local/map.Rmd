@@ -1,0 +1,24 @@
+---
+title: "上海新冠疫情概况"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    theme: readable
+    navbar:
+      - { title: "返回首页", href: "https://covid-sh-6gkhr9773dab473d-1257749604.ap-shanghai.app.tcloudbase.com/", align: right }
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+source('./code-plot.R',encoding='utf-8')
+```
+
+
+# 居住地信息
+
+```{r}
+plot.map.location
+```
+
+

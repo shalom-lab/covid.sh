@@ -16,6 +16,10 @@ df.url<-df.url %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
 
+# v.date='2022-04-26',
+# v.url.case='https://mp.weixin.qq.com/s/zH8lKAD_P6ykUzNLfrrtQg',
+# v.url.location='https://mp.weixin.qq.com/s/SIuDbITNdgWwYyM3eiyrgg'
+
 v.date<-pull(slice_tail(df.url,n=1),v.date)
 v.url.case<-pull(slice_tail(df.url,n=1),v.url.case)
 v.url.location<-pull(slice_tail(df.url,n=1),v.url.location)

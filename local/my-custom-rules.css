@@ -1,0 +1,5 @@
+$navbar-bg: red
+.value-box .value {
+  font-family: math;
+  color: $navbar-bg
+}

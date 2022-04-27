@@ -55,13 +55,13 @@ case.asym.wider <- case.asym %>%
          pos_real=pos-case_asym) %>%
   group_by(district) %>%
   arrange(district,date) %>%
-  mutate(across(c(starts_with('case'),starts_with('asym'),pos),cumsum,.names = "cum_{.col}"))
+  mutate(across(c(starts_with('case'),starts_with('asym'),pos,pos_real),cumsum,.names = "cum_{.col}"))
 
 # 全市
 names(case.asym.wider)
 case.asym.wider.sh<-case.asym.wider %>%
   group_by(date) %>%
-  summarise(across(case_isolation:cum_asym,sum,na.rm=T)) %>%
+  summarise(across(case_isolation:cum_pos_real,sum,na.rm=T)) %>%
   mutate(all.new=case+asym,
          prop.new.case=round(100*case/all.new,1),
          prop.new.asym=round(100*asym/all.new,1),
@@ -75,6 +75,18 @@ case.asym.wider.sh<-case.asym.wider %>%
          across(c(cum_asym_screen,cum_asym_isolation),~round(.x*100/cum_asym,1),.names = "prop.{col}"),
   )
 
+# Variable description  ---------------------------------------------------
+names(case.asym.wider)
+variables<-data.frame(
+  name=names(case.asym.wider),
+  class=sapply(case.asym.wider,class),
+  description=c('日期','区','病例-隔离管控发现','病例-筛查发现','病例-转自无症状',
+                '无症状-隔离管控发现','无症状-筛查发现','新增病例(case_isolation+case_screen+case_asym)','新增无症状(asym_isolation+asym_screen)','阳性(case+asym)',
+                '净增阳性(case+asym-case_asym)',rep('累计(从3月9日计起)~',time=9))
+  ) %>%
+  set_names(c('变量名','类型','描述')) %>%
+  remove_rownames()
+
 
 # Data Export ------------------------------------------------------------------
 
@@ -87,14 +99,21 @@ map.2.new<-fromJSON('./data/map.2.new.json')
 shanghai<-geojson_read('./data/shanghai.json',what = "sp")
 
 # save rda
-save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,file='./share/data.rda')
+save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,variables,file='./share/data.rda')
 write.csv(case.asym.wider,'./share/case.asym.wider.csv',row.names = F)
 write.csv(case.asym.wider.sh,'./share/case.asym.wider.sh.csv',row.names = F)
 write.csv(map.2.new,'./share/map.2.new.csv',row.names = F)
+write.csv(variables,'./share/map.2.new.csv',row.names = F)
 
 # for shiny
-save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,file='../data-raw/data.rda')
+save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,variables,file='../data-raw/data.rda')
 
-# render
+# render map/index.html
+rmarkdown::render('./index.Rmd',output_file = paste0('../www/map/',Sys.Date()-1,'.html'))
+file.copy(paste0('../www/map/',Sys.Date()-1,'.html'),'../www/map/index.html',overwrite = T)
+
+# render index.html
 rmarkdown::render('./index.Rmd',output_file = paste0('../www/archive/',Sys.Date()-1,'.html'))
 file.copy(paste0('../www/archive/',Sys.Date()-1,'.html'),'../www/index.html',overwrite = T)
+
+

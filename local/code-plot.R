@@ -1,6 +1,8 @@
 library(tidyverse)
 library(echarts4r)
 library(leaflet)
+library(viridis)
+library(ggpointdensity)
 rm(list=ls())
 # Load Data--------------------------------------------------------------
 load('./share/data.rda')
@@ -224,7 +226,7 @@ plot.sh.line<-case.asym.wider.sh %>%
   e_line(name="新增无症状",asym,y_index = 0) %>%
   e_line(name="累计病例数",cum_case,y_index = 0) %>%
   e_line(name="累计无症状",cum_asym,y_index = 0) %>%
-  e_grid(right='18%') %>%
+  e_grid(right='5%') %>%
   e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
   e_y_axis(index=0,name='人数',nameLocation='end',nameGap=20,
            #max=max.cum.asym.sh,
@@ -250,7 +252,7 @@ plot.sh.bar<-case.asym.wider.sh %>%
   e_bar(name="新增无症状",barCategoryGap='2%',asym,y_index = 0) %>%
   e_bar(name="累计病例数",barCategoryGap='2%',cum_case,y_index = 0) %>%
   e_bar(name="累计无症状",barCategoryGap='2%',cum_asym,y_index = 0) %>%
-  e_grid(right='18%') %>%
+  e_grid(right='5%') %>%
   e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
   e_y_axis(index=0,name='人数',nameLocation='end',nameGap=20,
            #max=max.cum.asym.sh,
@@ -413,4 +415,72 @@ prop.asym.cum<-case.asym.wider.sh %>%
     )
   )
 
-prop.asym.cum
+
+# 每日阳性 每日累计 ---------------------------------------------------------------------
+
+plot.sh.pos_real<-case.asym.wider.sh %>%
+  arrange(date) %>%
+  e_charts(date) %>%
+  e_bar(name='每日新增感染者',pos_real,barCategoryGap='2%') %>%
+  e_grid(right='5%') %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
+  e_y_axis(index=0,name='每日新增感染者',nameLocation='end',nameGap=20,
+           #max=max.cum.asym.sh,
+           axisLine=list(show=T),axisTick=list(show=T)) %>%
+  e_datazoom(type='inside') %>%
+  e_datazoom(type='slider') %>%
+  e_tooltip(
+    trigger = 'axis',
+    axisPointer = list(
+      type = "shadow",
+      axis='x'
+    )
+  ) %>%
+  e_legend(show=F) %>%
+  e_toolbox_feature(
+    feature = "magicType",
+    type = list("line", "bar")
+  ) %>%
+  e_color(c('#AD002AFF'))
+
+plot.sh.pos_real
+
+
+plot.sh.cum_pos_real<-case.asym.wider.sh %>%
+  arrange(date) %>%
+  e_charts(date) %>%
+  e_bar(name='累计阳性感染者',cum_pos_real,barCategoryGap='2%') %>%
+  e_grid(right='5%') %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
+  e_y_axis(index=0,name='累计阳性感染者',nameLocation='end',nameGap=20,
+           #max=max.cum.asym.sh,
+           axisLine=list(show=T),axisTick=list(show=T)) %>%
+  e_datazoom(type='inside') %>%
+  e_datazoom(type='slider') %>%
+  e_tooltip(
+    trigger = 'axis',
+    axisPointer = list(
+      type = "shadow",
+      axis='x'
+    )
+  ) %>%
+  e_legend(show=F) %>%
+  e_toolbox_feature(
+    feature = "magicType",
+    type = list("line", "bar")
+  ) %>%
+  e_color(c('#AD002AFF'))
+
+plot.sh.cum_pos_real
+
+
+# value Box ---------------------------------------------------------------
+last<-case.asym.wider.sh %>%
+  arrange(date) %>%
+  slice_tail(n=1)
+names(last)
+count.new.case<-pull(last,case)
+count.new.asym<-pull(last,asym)
+count.new.pos_real<-pull(last,pos_real)
+count.cum.case<-pull(last,cum_case)
+count.cum.pos_real<-pull(last,cum_pos_real)

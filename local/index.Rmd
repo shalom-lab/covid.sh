@@ -2,52 +2,98 @@
 title: "上海新冠疫情概况"
 output: 
   flexdashboard::flex_dashboard:
-    orientation: columns
+    orientation: rows
     vertical_layout: fill
+    css: my-custom-rules.css
     theme: readable
+    navbar:
+      - { title: "居住地信息", href: "https://covid-sh-6gkhr9773dab473d-1257749604.ap-shanghai.app.tcloudbase.com/map", align: right }
+    source_code: "https://github.com/shalom-lab/covid.sh/blob/main/local/index.Rmd"
+
 ---
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
+library(DT)
 source('./code-plot.R',encoding='utf-8')
 source('./code-rt.R',encoding='utf-8')
 ```
 
+
 # 全市
 
+Row {data-height=200}
+--------------------------------------------------------------------
 
-Column {}
------------------------------------------------------------------------
-
-### 数据摘自上海发布 [同心协力,共克时艰](https://docs.qq.com/form/page/DWEh0V2FCdU5lWW9j)
-
+### 昨日新增确诊
 ```{r}
-plot.sh.line
+valueBox(count.new.case, icon = "fa-comments",color="info")
 ```
 
-### 
+### 昨日新增无症状
+```{r}
+valueBox(count.new.asym, icon = "fa-comments",color="danger")
+```
+
+### 昨日净增阳性感染人数
+```{r}
+valueBox(count.new.pos_real, icon = "fa-comments",color="primary")
+
+```
+
+### 累计确诊病例(自3月9日起)
+```{r}
+valueBox(count.cum.case, icon = "fa-comments",color="warning")
+```
+
+### 累计阳性感染者(自3月9日起)
+```{r}
+valueBox(count.cum.pos_real, icon = "fa-comments",color="success")
+```
+
+
+row {data-height=800}
+-----------------------------------------------------------------------
+### 每日阳性感染者 数据摘自上海发布 更新于 `r format(Sys.time(), "%Y-%m-%d %X")`
 
 ```{r}
-plot.sh.bar
+plot.sh.pos_real
+```
+
+### 累计阳性感染者
+
+```{r}
+plot.sh.cum_pos_real
 ```
 
 
 # 新增及累计
 
-
 Column {.tabset}
 -----------------------------------------------------------------------
 
-###  新增
+###  新增-分区
 
 ```{r}
 plot.district.new
 
 ```
 
-### 累计
+### 累计-分区
 ```{r}
 plot.district.cum
+```
+###  新增&累计
+
+```{r}
+plot.sh.line
+```
+
+###  新增&累计
+
+```{r}
+plot.sh.bar
+
 ```
 
 # 各区情况
@@ -86,51 +132,50 @@ plot.timeline.cum.bar
 # 构成情况
 
     
-Column {data-width=333}
+Row {data-height=500}
 -------------------------------------
     
-### 阳性新增
+### 新增阳性
     
 ```{r}
 prop.pos.new
 ```
 
-### 阳性累计
-    
-```{r}
-prop.pos.cum
-```
-Column {data-width=333}
--------------------------------------
-   
-### 病例新增
+### 新增病例
 
 ```{r}
 prop.case.new
 ```   
- 
-### 病例累计
-    
-```{r}
-prop.case.cum
-```
-无症状 {data-width=333}
--------------------------------------
-   
-### 无症状新增
+
+### 新增无症状
 
 ```{r}
 prop.asym.new
 ```   
- 
-### 无症状累计
+
+Row {data-height=500}
+-------------------------------------
+
+### 累计阳性
     
 ```{r}
-prop.asym.cum
+prop.pos.cum
+``` 
+
+ 
+### 累计病例
+    
+```{r}
+prop.case.cum
 ```
 
-<!-- # 居住地信息 -->
+### 累计无症状
 
+```{r}
+prop.asym.new
+```   
+
+<!-- # 居住地信息 -->
 
 <!-- ```{r} -->
 <!-- plot.map.location -->
@@ -139,19 +184,43 @@ prop.asym.cum
 
 # 流行趋势
 
-Column { data-width=800 }
--------------------------
-### 时变再生数Rt [阅读原文](https://blog-7gi7tsfg85e1922f-1257749604.ap-shanghai.app.tcloudbase.com/posts/epi/covid-rt.html)
+### 时变再生数Rt [阅读原文](https://blog-7gi7tsfg85e1922f-1257749604.ap-shanghai.app.tcloudbase.com/posts/epi/covid-rt.html) { data-width=800 }
 ```{r}
 plot.rt
 
 ```
 
-Column { data-width=400 }
--------------------------
-### 系列间隔SI(假设)
+### 系列间隔SI(假设) { data-width=400 }
 
 ```{r}
 plot.si
 
+```
+
+# 数据
+
+Column { .tabset }
+------------------------------------------------
+
+### 变量
+```{r}
+DT::datatable(variables)
+```
+
+
+### 分区
+```{r}
+DT::datatable(case.asym.wider,extensions = 'Buttons',
+            options = list(dom = 'Blfrtip',
+                           buttons = c('copy', 'csv', 'excel'),
+                           lengthMenu = list(c(10,25,50,-1),
+                                             c(10,25,50,"All"))))
+```
+### 全市
+```{r}
+DT::datatable(case.asym.wider.sh, extensions = 'Buttons',
+            options = list(dom = 'Blfrtip',
+                           buttons = c('copy', 'csv', 'excel'),
+                           lengthMenu = list(c(10,25,50,-1),
+                                             c(10,25,50,"All"))))
 ```
