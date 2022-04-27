@@ -129,13 +129,13 @@ prop.asym.new
 prop.asym.cum
 ```
 
-# 居住地信息
+<!-- # 居住地信息 -->
 
 
-```{r}
-plot.map.location
+<!-- ```{r} -->
+<!-- plot.map.location -->
 
-```
+<!-- ``` -->
 
 # 流行趋势
 

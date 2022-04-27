@@ -98,7 +98,3 @@ save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,file='../data-raw/dat
 # render
 rmarkdown::render('./index.Rmd',output_file = paste0('../www/archive/',Sys.Date()-1,'.html'))
 file.copy(paste0('../www/archive/',Sys.Date()-1,'.html'),'../www/index.html',overwrite = T)
-
-
-
-
