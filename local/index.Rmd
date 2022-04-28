@@ -66,6 +66,20 @@ plot.sh.pos_real
 plot.sh.cum_pos_real
 ```
 
+# 流行趋势
+
+### 时变再生数Rt [阅读原文](https://blog-7gi7tsfg85e1922f-1257749604.ap-shanghai.app.tcloudbase.com/posts/epi/covid-rt.html) { data-width=800 }
+```{r}
+plot.rt
+
+```
+
+### 系列间隔SI(假设) { data-width=400 }
+
+```{r}
+plot.si
+
+```
 
 # 新增及累计
 
@@ -181,21 +195,6 @@ prop.asym.new
 <!-- plot.map.location -->
 
 <!-- ``` -->
-
-# 流行趋势
-
-### 时变再生数Rt [阅读原文](https://blog-7gi7tsfg85e1922f-1257749604.ap-shanghai.app.tcloudbase.com/posts/epi/covid-rt.html) { data-width=800 }
-```{r}
-plot.rt
-
-```
-
-### 系列间隔SI(假设) { data-width=400 }
-
-```{r}
-plot.si
-
-```
 
 # 数据
 
