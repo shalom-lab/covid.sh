@@ -9,20 +9,18 @@ rm(list=ls())
 # VARIABLE
 df.url<-readRDS('data/df.url.RDS')
 df.url<-df.url %>%
-  bind_rows(c(v.date='2022-04-26',
-            v.url.case='https://mp.weixin.qq.com/s/zH8lKAD_P6ykUzNLfrrtQg',
-            v.url.location='https://mp.weixin.qq.com/s/SIuDbITNdgWwYyM3eiyrgg')) %>%
+  bind_rows(c(v.date='2022-04-27',
+            v.url.case='https://mp.weixin.qq.com/s/rufH4lvC5yO1835aNhs93A',
+            v.url.location='https://mp.weixin.qq.com/s/SKkU2W-Ic1H_qWnYC9NtXA')) %>%
   distinct(v.date,.keep_all = T) %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
 
-# v.date='2022-04-26',
-# v.url.case='https://mp.weixin.qq.com/s/zH8lKAD_P6ykUzNLfrrtQg',
-# v.url.location='https://mp.weixin.qq.com/s/SIuDbITNdgWwYyM3eiyrgg'
+tem.df<-filter(df.url,v.date=='2022-04-27')
 
-v.date<-pull(slice_tail(df.url,n=1),v.date)
-v.url.case<-pull(slice_tail(df.url,n=1),v.url.case)
-v.url.location<-pull(slice_tail(df.url,n=1),v.url.location)
+v.date<-pull(tem.df,v.date)
+v.url.case<-pull(tem.df,v.url.case)
+v.url.location<-pull(tem.df,v.url.location)
 v.baiduapi<-'https://api.map.baidu.com/geocoding/v3/?address=ADDRESS&output=json&ak=GwzPkV44UAHW3f9gnhT80ZsLLy3zpSI6'
 # Tools
 mf.tag <- function(tag,startRows,totalRow){
@@ -57,8 +55,8 @@ df.asym.1<-data.frame(text=html.case %>% html_elements('p') %>% html_text()) %>%
          date=ymd(v.date))
 
 # fill group
-df.case.1$group<-mf.tag(c('isolation','screen','asym'),c(1,16,20),35)
-df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,17),26)
+df.case.1$group<-mf.tag(c('isolation','screen','asym'),c(1,16,17),31)
+df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,17),25)
 
 df.case.2 <-df.case.1 %>%
   select(date,district,group,n)

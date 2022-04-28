@@ -108,12 +108,16 @@ write.csv(variables,'./share/map.2.new.csv',row.names = F)
 # for shiny
 save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,variables,file='../data-raw/data.rda')
 
+# update date
+date.map<-map.2.new %>% filter(!is.na(date)) %>% arrange(date) %>% slice_tail(n=1) %>% pull(date)
+date.home<-case.asym.wider.sh %>% filter(!is.na(date)) %>% arrange(date) %>% slice_tail(n=1) %>% pull(date)
+
 # render map/index.html
-rmarkdown::render('./index.Rmd',output_file = paste0('../www/map/',Sys.Date()-1,'.html'))
-file.copy(paste0('../www/map/',Sys.Date()-1,'.html'),'../www/map/index.html',overwrite = T)
+rmarkdown::render('./map.Rmd',output_file = paste0('../www/map/',date.map,'.html'))
+file.copy(paste0('../www/map/',date.map,'.html'),'../www/map/index.html',overwrite = T)
 
 # render index.html
-rmarkdown::render('./index.Rmd',output_file = paste0('../www/archive/',Sys.Date()-1,'.html'))
-file.copy(paste0('../www/archive/',Sys.Date()-1,'.html'),'../www/index.html',overwrite = T)
+rmarkdown::render('./index.Rmd',output_file = paste0('../www/home/',date.home,'.html'))
+file.copy(paste0('../www/home/',date.home,'.html'),'../www/index.html',overwrite = T)
 
 
