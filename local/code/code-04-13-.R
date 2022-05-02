@@ -9,14 +9,14 @@ rm(list=ls())
 # VARIABLE
 df.url<-readRDS('data/df.url.RDS')
 df.url<-df.url %>%
-  bind_rows(c(v.date='2022-04-29',
-            v.url.case='https://mp.weixin.qq.com/s/CYOXGLyfb83mBhXfa-NCrA',
-            v.url.location='https://mp.weixin.qq.com/s/aQMZ8WmeYEaBPFv0yVs4BQ')) %>%
+  bind_rows(c(v.date='2022-05-01',
+            v.url.case='https://mp.weixin.qq.com/s/9JjgWRhVwTN9IY0DYS2ajQ',
+            v.url.location='https://mp.weixin.qq.com/s/agdZHOqVZh9atNHOQEFTog')) %>%
   distinct(v.date,.keep_all = T) %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
 
-tem.df<-filter(df.url,v.date=='2022-04-28')
+tem.df<-filter(df.url,v.date=='2022-05-01')
 
 v.date<-pull(tem.df,v.date)
 v.url.case<-pull(tem.df,v.url.case)
@@ -55,8 +55,8 @@ df.asym.1<-data.frame(text=html.case %>% html_elements('p') %>% html_text()) %>%
          date=ymd(v.date))
 
 # fill group
-df.case.1$group<-mf.tag(c('isolation','screen','asym'),c(1,17,20),35)
-df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,17),22)
+df.case.1$group<-mf.tag(c('isolation','asym'),c(1,13),27)
+df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,17),23)
 
 df.case.2 <-df.case.1 %>%
   select(date,district,group,n)
@@ -73,7 +73,7 @@ df.map.1<-html.location %>% html_elements('section > p ') %>% html_text() %>%
   rownames_to_column(var = 'id') %>%
   mutate(id=as.integer(id),
          wordcount=str_count(value),
-         districtIndex=str_detect(value,'2022年4月.+日')) %>%
+         districtIndex=str_detect(value,'2022年5月.+日')) %>%
   arrange(-wordcount)
 
 df.map.2<-df.map.1 %>%
@@ -119,4 +119,5 @@ save.image(file= paste0('./RData/',v.date,'.rda'))
 sum(df.case.2$n)
 sum(df.asym.2$n)
 
-
+# RENDER
+source(here::here('code-data.R'))
