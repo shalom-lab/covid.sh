@@ -9,6 +9,8 @@ output:
     navbar:
       - { title: "居住地信息", href: "https://covid-sh-6gkhr9773dab473d-1257749604.ap-shanghai.app.tcloudbase.com/map", align: right }
     source_code: "https://github.com/shalom-lab/covid.sh/blob/main/local/index.Rmd"
+    includes:
+       in_header: google_analytics.html
 
 ---
 
