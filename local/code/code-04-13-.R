@@ -11,7 +11,7 @@ df.url<-readRDS('data/df.url.RDS')
 df.url<-df.url %>%
   bind_rows(c(v.date='2022-05-11',
             v.url.case='https://mp.weixin.qq.com/s/kNyNia6o6hNPY32NdM2XwA',
-            v.url.location='https://mp.weixin.qq.com/s/kNyNia6o6hNPY32NdM2XwA')) %>%
+            v.url.location='https://mp.weixin.qq.com/s/i4BwsY-a9zXjkJe-FTea4Q')) %>%
   distinct(v.date,.keep_all = T) %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
@@ -44,8 +44,7 @@ df.case.1<-data.frame(text=html.case %>% html_elements('p') %>% html_text()) %>%
          district=str_extract(t2,'(?<=居住于).+'),
          date=ymd(v.date))
 
-df.asym.1<-data.frame(text=html.case %>% html_elements('section') %>% html_text()) %>%
-  filter(str_detect(text,pattern = "无症状感染者\\d+.*，居住于")) %>%
+df.asym.1<-data.frame(text=html.case %>% html_elements('p') %>% html_text()) %>%
   filter(str_detect(text,pattern = "^无症状感染者")) %>%
   separate(text, into= c("t1","t2",'t3'),sep= "，") %>%
   rowwise() %>%
@@ -56,8 +55,8 @@ df.asym.1<-data.frame(text=html.case %>% html_elements('section') %>% html_text(
          date=ymd(v.date))
 
 # fill group
-df.case.1$group<-mf.tag(c('isolation','asym'),c(1,10),22)
-df.asym.1$group<-mf.tag(c('isolation'),c(1),14)
+df.case.1$group<-mf.tag(c('isolation','asym'),c(1,9),21)
+df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,17),18)
 
 df.case.2 <-df.case.1 %>%
   select(date,district,group,n)
