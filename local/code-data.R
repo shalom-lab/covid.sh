@@ -112,9 +112,8 @@ save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,variables,file='../da
 rmarkdown::render('./map.Rmd',output_file = paste0('../www/map/index.html'))
 
 # render index.html
-date.home<-case.asym.wider.sh %>% filter(!is.na(date)) %>% arrange(date) %>% slice_tail(n=1) %>% pull(date)
-rmarkdown::render('./index.Rmd',output_file = paste0('../www/home/',date.home,'.html'))
-date.home<-case.asym.wider.sh %>% filter(!is.na(date)) %>% arrange(date) %>% slice_tail(n=1) %>% pull(date)
-file.copy(paste0('../www/home/',date.home,'.html'),'../www/index.html',overwrite = T)
+# date.home<-case.asym.wider.sh %>% filter(!is.na(date)) %>% arrange(date) %>% slice_tail(n=1) %>% pull(date)
+rmarkdown::render('./index.Rmd',output_file = paste0('../www/index.html'))
+
 
 
