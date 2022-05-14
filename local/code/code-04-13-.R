@@ -9,14 +9,14 @@ rm(list=ls())
 # VARIABLE
 df.url<-readRDS('data/df.url.RDS')
 df.url<-df.url %>%
-  bind_rows(c(v.date='2022-05-12',
-            v.url.case='https://mp.weixin.qq.com/s/HwJtxifyDizLGW3_NHhqJg',
-            v.url.location='https://mp.weixin.qq.com/s/YyhqHoMgyetDu6kP9-Ybpw')) %>%
+  bind_rows(c(v.date='2022-05-13',
+            v.url.case='https://mp.weixin.qq.com/s/rCMCEYZHZ_kesfdupIPbLA',
+            v.url.location='https://mp.weixin.qq.com/s/lIMFiBlzIXvju2VV_I4j0g')) %>%
   distinct(v.date,.keep_all = T) %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
 
-tem.df<-filter(df.url,v.date=='2022-05-12')
+tem.df<-filter(df.url,v.date=='2022-05-13')
 
 v.date<-pull(tem.df,v.date)
 v.url.case<-pull(tem.df,v.url.case)
@@ -34,7 +34,7 @@ mf.tag <- function(tag,startRows,totalRow){
 
 html.case<-read_html(v.url.case)
 
-df.case.1<-data.frame(text=html.case %>% html_elements('p') %>% html_text()) %>%
+df.case.1<-data.frame(text=html.case %>% html_elements('section') %>% html_text()) %>%
   filter(str_detect(text,pattern = "病例\\d+.*，居住于")) %>%
   separate(text, into= c("t1","t2",'t3'),sep= "，") %>%
   rowwise() %>%
@@ -42,9 +42,10 @@ df.case.1<-data.frame(text=html.case %>% html_elements('p') %>% html_text()) %>%
          n2=as.numeric(tail(str_extract_all(t1,'\\d+')[[1]],1)),
          n=n2-n1+1,
          district=str_extract(t2,'(?<=居住于).+'),
-         date=ymd(v.date))
+         date=ymd(v.date)) %>%
+  filter(!is.na(district))
 
-df.asym.1<-data.frame(text=html.case %>% html_elements('p') %>% html_text()) %>%
+df.asym.1<-data.frame(text=html.case %>% html_elements('section') %>% html_text()) %>%
   filter(str_detect(text,pattern = "^无症状感染者")) %>%
   separate(text, into= c("t1","t2",'t3'),sep= "，") %>%
   rowwise() %>%
@@ -56,8 +57,8 @@ df.asym.1<-data.frame(text=html.case %>% html_elements('p') %>% html_text()) %>%
   filter(!is.na(district))
 
 # fill group
-df.case.1$group<-mf.tag(c('isolation','asym'),c(1,10),22)
-df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,17),17)
+df.case.1$group<-mf.tag(c('isolation','asym'),c(1,12),23)
+df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,16),16)
 
 df.case.2 <-df.case.1 %>%
   select(date,district,group,n)
