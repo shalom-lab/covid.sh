@@ -61,7 +61,9 @@ case.asym.wider <- case.asym %>%
 names(case.asym.wider)
 case.asym.wider.sh<-case.asym.wider %>%
   group_by(date) %>%
-  summarise(across(case_isolation:cum_pos_real,sum,na.rm=T)) %>%
+  summarise(across(case_isolation:pos_real,sum,na.rm=T)) %>%
+  arrange(date) %>%
+  mutate(across(c(starts_with('case'),starts_with('asym'),pos,pos_real),cumsum,.names = "cum_{.col}")) %>%
   mutate(all.new=case+asym,
          prop.new.case=round(100*case/all.new,1),
          prop.new.asym=round(100*asym/all.new,1),
@@ -114,6 +116,3 @@ rmarkdown::render('./map.Rmd',output_file = paste0('../www/map/index.html'))
 # render index.html
 # date.home<-case.asym.wider.sh %>% filter(!is.na(date)) %>% arrange(date) %>% slice_tail(n=1) %>% pull(date)
 rmarkdown::render('./index.Rmd',output_file = paste0('../www/index.html'))
-
-
-
