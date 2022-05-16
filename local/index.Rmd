@@ -19,6 +19,7 @@ library(flexdashboard)
 library(DT)
 source('./code-plot.R',encoding='utf-8')
 source('./code-rt.R',encoding='utf-8')
+source('./code-g2r.R',encoding = 'utf-8')
 ```
 
 
@@ -117,6 +118,10 @@ plot.sh.bar
 
 Column { .tabset }
 -----------------------------------------------------------------------
+### 净增阳性
+```{r}
+g2r.pos_real
+```
 
 ### 新增
 
