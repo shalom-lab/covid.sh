@@ -484,3 +484,24 @@ count.new.asym<-pull(last,asym)
 count.new.pos_real<-pull(last,pos_real)
 count.cum.case<-pull(last,cum_case)
 count.cum.pos_real<-pull(last,cum_pos_real)
+
+
+# Facet -------------------------------------------------------------------
+
+plot.facet.new<-case.asym.wider %>%
+  group_by(district) %>%
+  arrange(date) %>%
+  e_charts(date) %>%
+  e_line(name="新增无症状",asym,y_index = 0) %>%
+  e_x_axis(axisLabel = list(interval = 1, rotate = 45,show=FALSE)) %>%
+  e_y_axis(name='每日新增',nameLocation='end',nameGap=20,max=max.new.asym.di,axisLine=list(show=T),axisTick=list(show=T)) %>%
+  e_tooltip(
+    trigger = 'axis',
+    axisPointer = list(
+      type = "line",
+      axis='x'
+    )
+  ) %>%
+  e_facet(rows = 4, cols=4, legend_pos = "top", legend_space = 12)
+
+plot.facet.new
