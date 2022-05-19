@@ -105,7 +105,7 @@ save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,variables,file='./sha
 write.csv(case.asym.wider,'./share/case.asym.wider.csv',row.names = F)
 write.csv(case.asym.wider.sh,'./share/case.asym.wider.sh.csv',row.names = F)
 write.csv(map.2.new,'./share/map.2.new.csv',row.names = F)
-write.csv(variables,'./share/map.2.new.csv',row.names = F)
+write.csv(variables,'./share/variables',row.names = F)
 
 # for shiny
 save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,variables,file='../data-raw/data.rda')
