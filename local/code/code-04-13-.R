@@ -9,14 +9,14 @@ rm(list=ls())
 # VARIABLE
 df.url<-readRDS('data/df.url.RDS')
 df.url<-df.url %>%
-  bind_rows(c(v.date='2022-05-19',
-            v.url.case='https://mp.weixin.qq.com/s/SBdPT7J_9WJq0Y4bp2SXIA',
-            v.url.location='https://mp.weixin.qq.com/s/HIjthO2QrWMs3awazdyI5Q')) %>%
+  bind_rows(c(v.date='2022-05-20',
+            v.url.case='https://mp.weixin.qq.com/s/WG5vfHOkt55JTZdMsrbFew',
+            v.url.location='https://mp.weixin.qq.com/s/APzs3KMMjfzAZzhypMXAEg')) %>%
   distinct(v.date,.keep_all = T) %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
 
-tem.df<-filter(df.url,v.date=='2022-05-19')
+tem.df<-filter(df.url,v.date=='2022-05-20')
 
 v.date<-pull(tem.df,v.date)
 v.url.case<-pull(tem.df,v.url.case)
