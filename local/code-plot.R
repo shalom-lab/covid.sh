@@ -485,7 +485,6 @@ count.new.pos_real<-pull(last,pos_real)
 count.cum.case<-pull(last,cum_case)
 count.cum.pos_real<-pull(last,cum_pos_real)
 
-
 # Facet -------------------------------------------------------------------
 
 plot.facet.new<-case.asym.wider %>%
