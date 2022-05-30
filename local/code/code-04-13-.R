@@ -9,14 +9,14 @@ rm(list=ls())
 # VARIABLE
 df.url<-readRDS('data/df.url.RDS')
 df.url<-df.url %>%
-  bind_rows(c(v.date='2022-05-27',
-            v.url.case='https://mp.weixin.qq.com/s/aEbMhZxCfT2r0SsnFNpWHQ',
-            v.url.location='https://mp.weixin.qq.com/s/A5CZRqmuMTdmYcZhdIi9rQ')) %>%
+  bind_rows(c(v.date='2022-05-28',
+            v.url.case='https://mp.weixin.qq.com/s/f1PHhQQkiK50bVI7n8WDjQ',
+            v.url.location='https://mp.weixin.qq.com/s/PHW04o9E4HKgkGE6wt3suA')) %>%
   distinct(v.date,.keep_all = T) %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
 
-tem.df<-filter(df.url,v.date=='2022-05-27')
+tem.df<-filter(df.url,v.date=='2022-05-28')
 
 v.date<-pull(tem.df,v.date)
 v.url.case<-pull(tem.df,v.url.case)
@@ -34,7 +34,7 @@ mf.tag <- function(tag,startRows,totalRow){
 
 html.case<-read_html(v.url.case)
 
-df.case.1<-data.frame(text=html.case %>% html_elements(c('p')) %>% html_text()) %>%
+df.case.1<-data.frame(text=html.case %>% html_elements(c('section')) %>% html_text()) %>%
   filter(str_detect(text,pattern = "病例\\d+.*，居住于")) %>%
   separate(text, into= c("t1","t2",'t3'),sep= "，") %>%
   rowwise() %>%
@@ -45,7 +45,7 @@ df.case.1<-data.frame(text=html.case %>% html_elements(c('p')) %>% html_text()) 
          date=ymd(v.date)) %>%
   filter(!is.na(district))
 
-df.asym.1<-data.frame(text=html.case %>% html_elements(c('p')) %>% html_text()) %>%
+df.asym.1<-data.frame(text=html.case %>% html_elements(c('section')) %>% html_text()) %>%
   filter(str_detect(text,pattern = "^无症状感染者")) %>%
   separate(text, into= c("t1","t2",'t3'),sep= "，") %>%
   rowwise() %>%
@@ -57,8 +57,8 @@ df.asym.1<-data.frame(text=html.case %>% html_elements(c('p')) %>% html_text()) 
   filter(!is.na(district))
 
 # fill group
-df.case.1$group<-mf.tag(c('isolation','screen','asym'),c(1,7,8),13)
-df.asym.1$group<-mf.tag(c('isolation'),c(1),12)
+df.case.1$group<-mf.tag(c('isolation','screen','asym'),c(1,6,7),14)
+df.asym.1$group<-mf.tag(c('isolation'),c(1),10)
 
 df.case.2 <-df.case.1 %>%
   select(date,district,group,n)
