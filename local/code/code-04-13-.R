@@ -9,14 +9,14 @@ rm(list=ls())
 # VARIABLE
 df.url<-readRDS('data/df.url.RDS')
 df.url<-df.url %>%
-  bind_rows(c(v.date='2022-05-29',
-            v.url.case='https://mp.weixin.qq.com/s/3IZriPgM0xnhBpjd6HMcFQ',
-            v.url.location='https://mp.weixin.qq.com/s/kuCaSb1fFdzaUhwsc6KPSA')) %>%
+  bind_rows(c(v.date='2022-05-30',
+            v.url.case='https://mp.weixin.qq.com/s/Q3DaP4NdE3bWpibQXNlWMA',
+            v.url.location='https://mp.weixin.qq.com/s/1AsoUPz51QTmNUPItNUCFg')) %>%
   distinct(v.date,.keep_all = T) %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
 
-tem.df<-filter(df.url,v.date=='2022-05-29')
+tem.df<-filter(df.url,v.date=='2022-05-30')
 
 v.date<-pull(tem.df,v.date)
 v.url.case<-pull(tem.df,v.url.case)
@@ -57,8 +57,8 @@ df.asym.1<-data.frame(text=html.case %>% html_elements(c('p')) %>% html_text()) 
   filter(!is.na(district))
 
 # fill group
-df.case.1$group<-mf.tag(c('isolation','screen','asym'),c(1,3,4),5)
-df.asym.1$group<-mf.tag(c('isolation'),c(1),10)
+df.case.1$group<-mf.tag(c('isolation','asym'),c(1,4),5)
+df.asym.1$group<-mf.tag(c('isolation'),c(1),7)
 
 df.case.2 <-df.case.1 %>%
   select(date,district,group,n)
