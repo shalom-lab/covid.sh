@@ -55,6 +55,7 @@ df.asym.1<-data.frame(text=html.case %>% html_elements(tag) %>% html_text()) %>%
          n=n2-n1+1,
          district=str_extract(t2,'(?<=居住于).+'),
          date=ymd(v.date)) %>%
+  mutate(district=str_remove(district,'[:punct:]')) %>%
   filter(!is.na(district))
 
 # fill group
