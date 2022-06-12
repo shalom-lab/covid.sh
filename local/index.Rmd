@@ -193,7 +193,7 @@ prop.case.cum
 ### 累计无症状
 
 ```{r}
-prop.asym.new
+prop.asym.cum
 ```   
 
 <!-- # 居住地信息 -->

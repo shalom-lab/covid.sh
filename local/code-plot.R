@@ -276,12 +276,12 @@ prop.pos.new<-case.asym.wider.sh %>%
   e_bar(name='病例',prop.new.case,stack='all',
         label = list(
           position='top',
-          show = TRUE
+          show = F
         )) %>%
   e_bar(name='无症状感染者',prop.new.asym,stack='all') %>%
   e_y_axis(name='百分比',nameLocation='end',nameGap=20,axisLine=list(show=T),axisTick=list(show=T)) %>%
-  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
-  e_title("每日新增阳性人员构成比",left='center',top='2%',itemGap=5) %>%
+  e_x_axis(axisLabel = list(rotate = 45)) %>%
+  e_title("每日新增阳性人员构成",left='center',top='2%',itemGap=5) %>%
   e_legend(top='10%') %>%
   e_grid(top='20%') %>%
   # e_datazoom(type='inside') %>%
@@ -301,12 +301,12 @@ prop.pos.cum<-case.asym.wider.sh %>%
   e_bar(name='病例',prop.cum.case,stack='all',
         label = list(
           position='top',
-          show = TRUE
+          show = F
         )) %>%
   e_bar(name='无症状感染者',prop.cum.asym,stack='all') %>%
   e_y_axis(name='百分比',nameLocation='end',nameGap=20,axisLine=list(show=T),axisTick=list(show=T)) %>%
-  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
-  e_title("累计阳性人员构成比",left='center',top='2%',itemGap=5) %>%
+  e_x_axis(axisLabel = list(rotate = 45)) %>%
+  e_title("累计阳性人员构成",left='center',top='2%',itemGap=5) %>%
   e_legend(top='10%') %>%
   e_grid(top='20%') %>%
   # e_datazoom(type='inside') %>%
@@ -329,7 +329,7 @@ prop.case.new<-case.asym.wider.sh %>%
   e_bar(name='筛查发现',prop.case_screen,stack='all') %>%
   e_bar(name='转自无症状',prop.case_asym,stack='all') %>%
   e_y_axis(name='百分比',nameLocation='end',max=100,nameGap=20,axisLine=list(show=T),axisTick=list(show=T)) %>%
-  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
+  e_x_axis(axisLabel = list(rotate = 45)) %>%
   e_title("每日新增病例来源构成",left='center',top='2%',itemGap=5) %>%
   e_legend(top='10%') %>%
   e_grid(top='20%') %>%
@@ -351,7 +351,7 @@ prop.case.cum<-case.asym.wider.sh %>%
   e_bar(name='筛查发现',prop.cum_case_screen,stack='all') %>%
   e_bar(name='转自无症状',prop.cum_case_asym,stack='all') %>%
   e_y_axis(name='百分比',nameLocation='end',max=100,nameGap=20,axisLine=list(show=T),axisTick=list(show=T)) %>%
-  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
+  e_x_axis(axisLabel = list(rotate = 45)) %>%
   e_title("累计病例来源构成",left='center',top='2%',itemGap=5) %>%
   e_legend(top='10%') %>%
   e_grid(top='20%') %>%
@@ -373,11 +373,11 @@ prop.asym.new<-case.asym.wider.sh %>%
   e_chart(date) %>%
   e_bar(name='隔离管控',prop.asym_isolation,stack='all',label = list(
     position='top',
-    show = TRUE
+    show = F
   )) %>%
   e_bar(name='筛查发现',prop.asym_screen,stack='all') %>%
   e_y_axis(name='百分比',nameLocation='end',max=100,nameGap=20,axisLine=list(show=T),axisTick=list(show=T)) %>%
-  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
+  e_x_axis(axisLabel = list(rotate = 45)) %>%
   e_title("每日新增无症状感染者来源构成",left='center',top='2%',itemGap=5) %>%
   e_legend(top='10%') %>%
   e_grid(top='20%') %>%
@@ -395,13 +395,13 @@ prop.asym.new
 
 prop.asym.cum<-case.asym.wider.sh %>%
   e_chart(date) %>%
-  e_bar(name='隔离管控',prop.asym_isolation,stack='all',label = list(
+  e_bar(name='隔离管控',prop.cum_asym_isolation,stack='all',label = list(
     position='top',
-    show = TRUE
+    show = F
   )) %>%
-  e_bar(name='筛查发现',prop.asym_screen,stack='all') %>%
+  e_bar(name='筛查发现',prop.cum_asym_screen,stack='all') %>%
   e_y_axis(name='百分比',nameLocation='end',max=100,nameGap=20,axisLine=list(show=T),axisTick=list(show=T)) %>%
-  e_x_axis(axisLabel = list(interval = 1, rotate = 45)) %>%
+  e_x_axis(axisLabel = list(rotate = 45)) %>%
   e_title("累计无症状感染者来源构成",left='center',top='2%',itemGap=5) %>%
   e_legend(top='10%') %>%
   e_grid(top='20%') %>%
@@ -415,6 +415,7 @@ prop.asym.cum<-case.asym.wider.sh %>%
     )
   )
 
+prop.asym.cum
 
 # 每日阳性 每日累计 ---------------------------------------------------------------------
 

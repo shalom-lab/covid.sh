@@ -45,7 +45,7 @@ case.asym<-bind_rows(list(case=case.2,asym=asym.2),.id='type')
 case.asym.wider <- case.asym %>%
   mutate(date=as.character(date)) %>%
   ungroup() %>%
-  pivot_wider(names_from = c(type,group),values_from = n) %>%
+  pivot_wider(names_from = c(type,group),values_from = n,id_expand = T) %>%
   ungroup() %>%
   rowwise() %>%
   replace(is.na(.),0) %>%
