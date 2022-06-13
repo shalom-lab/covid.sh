@@ -1,8 +1,6 @@
 library(tidyverse)
 library(echarts4r)
 library(leaflet)
-library(viridis)
-library(ggpointdensity)
 rm(list=ls())
 # Load Data--------------------------------------------------------------
 load('./share/data.rda')
@@ -38,7 +36,8 @@ plot.district.new<-case.asym.wider %>%
   e_legend(top='10%') %>%
   e_datazoom(type='inside') %>%
   e_datazoom(type='slider') %>%
-  e_title("每日新增病例和无症状感染者人数",'左:病例,右:无症状感染者',left='center',top='1%',itemGap=5)
+  e_title("每日新增病例和无症状感染者人数",'左:病例,右:无症状感染者',left='center',top='1%',itemGap=5) %>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
 
 plot.district.new
 
@@ -61,7 +60,8 @@ plot.district.cum<-case.asym.wider %>%
   e_legend(top='10%') %>%
   e_datazoom(type='inside') %>%
   e_datazoom(type='slider') %>%
-  e_title("累计病例和无症状感染者人数",'左:病例,右:无症状感染者',left='center',top='1%',itemGap=5)
+  e_title("累计病例和无症状感染者人数",'左:病例,右:无症状感染者',left='center',top='1%',itemGap=5)%>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
 
 plot.district.cum
 # Leaflet -------------------------------------------------------------------
@@ -136,7 +136,9 @@ plot.timeline.new<-case.asym.wider %>%
   ) %>%
   e_timeline_opts(right='5%',width=80,top='5%',bottom='5%',orient='vertical',
                   inverse=T,autoPlay= T,playInterval=5000,currentIndex=9,
-                  label=list(position='right'))
+                  label=list(position='right')) %>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
+
 plot.timeline.new
 # 累计数
 plot.timeline.cum<-case.asym.wider %>%
@@ -157,7 +159,8 @@ plot.timeline.cum<-case.asym.wider %>%
   ) %>%
   e_timeline_opts(right='5%',width=80,top='5%',bottom='5%',orient='vertical',
                   inverse=T,autoPlay= T,playInterval=5000,currentIndex=9,
-                  label=list(position='right'))
+                  label=list(position='right')) %>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
 
 plot.timeline.cum
 
@@ -185,7 +188,8 @@ plot.timeline.new.bar<-case.asym.wider %>%
                   label=list(position='right')) %>%
   e_grid(top='25%',right='18%') %>%
   e_legend(top='12%') %>%
-  e_title("每日新增病例和无症状感染者人数",'左:病例,右:无症状感染者',left='center',top='2%',itemGap=5)
+  e_title("每日新增病例和无症状感染者人数",'左:病例,右:无症状感染者',left='center',top='2%',itemGap=5) %>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
 
 plot.timeline.new.bar
 
@@ -213,7 +217,8 @@ plot.timeline.cum.bar<-case.asym.wider %>%
                   label=list(position='right')) %>%
   e_grid(top='25%',right='18%') %>%
   e_legend(top='12%') %>%
-  e_title("累计病例和无症状感染者人数",'左:病例,右:无症状感染者',left='center',top='2%',itemGap=5)
+  e_title("累计病例和无症状感染者人数",'左:病例,右:无症状感染者',left='center',top='2%',itemGap=5) %>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
 
 plot.timeline.cum.bar
 
@@ -240,7 +245,8 @@ plot.sh.line<-case.asym.wider.sh %>%
   ) %>%
   e_datazoom(type='inside') %>%
   e_datazoom(type='slider') %>%
-  e_labels()
+  e_labels() %>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
 
 plot.sh.line
 
@@ -265,7 +271,8 @@ plot.sh.bar<-case.asym.wider.sh %>%
       type = "shadow",
       axis='x'
     )
-  )
+  ) %>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
 
 plot.sh.bar
 
@@ -292,7 +299,8 @@ prop.pos.new<-case.asym.wider.sh %>%
       type = "shadow",
       axis='x'
     )
-  )
+  ) %>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
 
 prop.pos.new
 
@@ -317,7 +325,8 @@ prop.pos.cum<-case.asym.wider.sh %>%
       type = "shadow",
       axis='x'
     )
-  )
+  ) %>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
 
 prop.pos.cum
 
@@ -341,7 +350,8 @@ prop.case.new<-case.asym.wider.sh %>%
       type = "shadow",
       axis='x'
     )
-  )
+  ) %>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
 
 prop.case.new
 
@@ -363,7 +373,8 @@ prop.case.cum<-case.asym.wider.sh %>%
       type = "shadow",
       axis='x'
     )
-  )
+  ) %>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
 
 prop.case.cum
 
@@ -389,7 +400,8 @@ prop.asym.new<-case.asym.wider.sh %>%
       type = "shadow",
       axis='x'
     )
-  )
+  ) %>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
 
 prop.asym.new
 
@@ -413,7 +425,8 @@ prop.asym.cum<-case.asym.wider.sh %>%
       type = "shadow",
       axis='x'
     )
-  )
+  ) %>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
 
 prop.asym.cum
 
@@ -442,7 +455,8 @@ plot.sh.pos_real<-case.asym.wider.sh %>%
     feature = "magicType",
     type = list("line", "bar")
   ) %>%
-  e_color(c('#AD002AFF'))
+  e_color(c('#AD002AFF')) %>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
 
 plot.sh.pos_real
 
@@ -470,7 +484,8 @@ plot.sh.cum_pos_real<-case.asym.wider.sh %>%
     feature = "magicType",
     type = list("line", "bar")
   ) %>%
-  e_color(c('#AD002AFF'))
+  e_color(c('#AD002AFF')) %>%
+  e_toolbox_feature(feature = "saveAsImage",title='保存')
 
 plot.sh.cum_pos_real
 
