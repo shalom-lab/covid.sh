@@ -222,3 +222,5 @@ write_excel_csv(variables,'./share/variables')
 rmarkdown::render('./map.Rmd',output_file = paste0('../www/map/index.html'))
 
 rmarkdown::render('./index.Rmd',output_file = paste0('../www/index.html'))
+
+# git add . && git commit -m "update"
