@@ -33,7 +33,6 @@ mf.tag <- function(tag,startRows,totalRow){
 
 # Case and Asym -----------------------------------------------------------
 
-
 html.case<-read_html(v.url.case)
 
 tag<-'section'
