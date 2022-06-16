@@ -68,6 +68,10 @@ plot.district.cum
 
 map.2.new.sp<-split(map.2.new,map.2.new$date)
 
+
+# only show recent 7 days
+map.2.new.sp<-tail(map.2.new.sp,14)
+
 groups<-names(map.2.new.sp) %>%
   as_tibble() %>%
   mutate(date=as.Date(value)) %>%

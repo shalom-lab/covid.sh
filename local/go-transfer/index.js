@@ -6,10 +6,10 @@ const tranform = function(input) {
 }
 
 var Papa = require('papaparse');
- 
 
-  
-let rawdata = fs.readFileSync('../data/map.2.json');
+
+
+let rawdata = fs.readFileSync('../data/database/map.2.all.json');
 
 let map = JSON.parse(rawdata);
 
@@ -23,5 +23,5 @@ let newMap = map.map(item=>{
     }
 })
 
-console.log(newMap);
-fs.writeFileSync('../data/map.2.new.json', JSON.stringify(newMap));
+console.log(newMap.length)
+fs.writeFileSync('../data/database/map.2.all.new.json', JSON.stringify(newMap));
