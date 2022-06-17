@@ -66,7 +66,7 @@ plot.district.cum<-case.asym.wider %>%
 plot.district.cum
 # Leaflet -------------------------------------------------------------------
 
-map.2.new.sp<-split(map.2.new,map.2.new$date)
+map.2.new.sp<-split(map.2.all.new,map.2.all.new$date)
 
 
 # only show recent 7 days
@@ -102,7 +102,7 @@ names(map.2.new.sp) %>%
       addCircles(data=map.2.new.sp[[df]],
                  lng=~lng1, lat=~lat1,
                  label=~paste0(address,'-',date),
-                 radius = 50,
+                 radius = 500,
                  stroke = F,
                  color=~pal(groups$group.name[groups$value==df]),
                  fillOpacity = 0.5,
