@@ -5,20 +5,21 @@ library(furrr)
 library(jsonlite)
 library(janitor)
 library(here)
+library(geojsonio)
 future::plan(multisession)
 
 rm(list=ls())
 # VARIABLE
 df.url<-readRDS('data/df.url.RDS')
 df.url<-df.url %>%
-  bind_rows(c(v.date='2022-06-15',
-            v.url.case='https://mp.weixin.qq.com/s/oKMLa88jIQi6sSROqrOhWw',
-            v.url.location='https://mp.weixin.qq.com/s/SHpQtAgzJRTHsypyDtEU3w')) %>%
+  bind_rows(c(v.date='2022-06-17',
+            v.url.case='https://mp.weixin.qq.com/s/_7eWLs7S2EOY020RyvGLlA',
+            v.url.location='https://mp.weixin.qq.com/s/CzHc-xFiTbldTrX5g6NzQA')) %>%
   distinct(v.date,.keep_all = T) %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
 
-tem.df<-filter(df.url,v.date=='2022-06-15')
+tem.df<-filter(df.url,v.date=='2022-06-17')
 
 v.date<-pull(tem.df,v.date)
 v.url.case<-pull(tem.df,v.url.case)
@@ -35,7 +36,7 @@ mf.tag <- function(tag,startRows,totalRow){
 
 html.case<-read_html(v.url.case)
 
-tag<-'section'
+tag<-'p'
 df.case.1<-data.frame(text=html.case %>% html_elements(tag) %>% html_text()) %>%
   filter(str_detect(text,pattern = "病例\\d+.*，居住于")) %>%
   separate(text, into= c("t1","t2",'t3'),sep= "，") %>%
@@ -47,7 +48,7 @@ df.case.1<-data.frame(text=html.case %>% html_elements(tag) %>% html_text()) %>%
          date=ymd(v.date)) %>%
   filter(!is.na(district))
 
-df.asym.1<-data.frame(text=html.case %>% html_elements(tag) %>% html_text()) %>%
+df.asym.1<-data.frame(text=html.case %>% html_elements('p') %>% html_text()) %>%
   filter(str_detect(text,pattern = "^无症状感染者")) %>%
   separate(text, into= c("t1","t2",'t3'),sep= "，") %>%
   rowwise() %>%
@@ -60,14 +61,20 @@ df.asym.1<-data.frame(text=html.case %>% html_elements(tag) %>% html_text()) %>%
   filter(!is.na(district))
 
 # fill group
-df.case.1$group<-mf.tag(c('isolation','screen'),c(1,6),dim(df.case.1)[1])
-df.asym.1$group<-mf.tag(c('isolation'),c(1),dim(df.asym.1)[1])
+df.case.1$group<-mf.tag(c('isolation'),c(1),dim(df.case.1)[1])
+df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,3),dim(df.asym.1)[1])
 
 df.case.2 <-df.case.1 %>%
   select(date,district,group,n)
 
 df.asym.2 <-df.asym.1 %>%
   select(date,district,group,n)
+
+#df.case.2 <- tribble(
+#  ~date,~district,~group,~n,
+#  ymd('2022-06-17'),'宝山区','isolation',1,
+#)
+
 
 # Location ----------------------------------------------------------------
 
@@ -85,10 +92,9 @@ df.map.2<-df.map.1 %>%
   filter(wordcount>2,
          !str_detect(value,'已对相关.+落实.+'),
          !str_detect(value,'各区信息如下'),
-         !str_detect(value,'滑动查看更多')) %>%
-  slice(-1) %>%
+         !str_detect(value,'滑动查看更多'),
+         !str_detect(value,'市卫健委')) %>%
   arrange(id) %>%
-  slice(-1) %>%
   select(-id) %>%
   rownames_to_column(var = 'id') %>%
   mutate(id=as.integer(id))
@@ -210,10 +216,10 @@ shanghai<-geojson_read(here::here('data/database/shanghai.json'),what = "sp")
 
 # Share Data --------------------------------------------------------------
 
-save(map.2.new,case.asym.wider,case.asym.wider.sh,shanghai,variables,file='./share/data.rda')
+save(map.2.all.new,case.asym.wider,case.asym.wider.sh,shanghai,variables,file='./share/data.rda')
 write_excel_csv(case.asym.wider,'./share/case.asym.wider.csv')
 write_excel_csv(case.asym.wider.sh,'./share/case.asym.wider.sh.csv')
-write_excel_csv(map.2.new,'./share/map.2.new.csv')
+write_excel_csv(map.2.all.new,'./share/map.2.new.csv')
 write_excel_csv(variables,'./share/variables')
 
 
