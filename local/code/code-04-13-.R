@@ -12,14 +12,14 @@ rm(list=ls())
 # VARIABLE
 df.url<-readRDS('data/df.url.RDS')
 df.url<-df.url %>%
-  bind_rows(c(v.date='2022-06-23',
-            v.url.case='https://mp.weixin.qq.com/s/_yzfN2k-LM0aj2bS53pmAA',
-            v.url.location='https://mp.weixin.qq.com/s/QTlA_DirQA1P32hGA4vHKQ')) %>%
+  bind_rows(c(v.date='2022-06-24',
+            v.url.case='',
+            v.url.location='')) %>%
   distinct(v.date,.keep_all = T) %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
 
-tem.df<-filter(df.url,v.date=='2022-06-23')
+tem.df<-filter(df.url,v.date=='2022-06-24')
 
 v.date<-pull(tem.df,v.date)
 v.url.case<-pull(tem.df,v.url.case)
@@ -70,15 +70,15 @@ df.case.2 <-df.case.1 %>%
 df.asym.2 <-df.asym.1 %>%
   select(date,district,group,n)
 
-#df.case.2 <- tribble(
-#  ~date,~district,~group,~n,
-#  ymd('2022-06-17'),'宝山区','isolation',1,
-#)
+df.case.2 <- tribble(
+  ~date,~district,~group,~n,
+  ymd('2022-06-24'),'宝山区','isolation',0,
+)
+df.asym.2 <- tribble(
+ ~date,~district,~group,~n,
+ ymd('2022-06-24'),'宝山区','isolation',0,
+)
 
-# df.asym.2 <- tribble(
-#  ~date,~district,~group,~n,
-#  ymd('2022-06-23'),'宝山区','isolation',1,
-# )
 
 # Location ----------------------------------------------------------------
 
@@ -124,6 +124,10 @@ df.map.3 <- df.map.2 %>%
 
 df.map.4 <- df.map.3 %>%
   select(district,address,lng,lat,date)
+
+df.map.4 <- tribble(
+ ~district,~address,~lng,~lat,~date,
+)
 
 # Save Daily Data ------------------------------------------------------------------
 write_excel_csv(df.case.2,file = paste0('./data/df.case-',v.date,'.csv'))
