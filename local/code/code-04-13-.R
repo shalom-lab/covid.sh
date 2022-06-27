@@ -127,6 +127,7 @@ df.map.4 <- df.map.3 %>%
 
 df.map.4 <- tribble(
  ~district,~address,~lng,~lat,~date,
+ NA_character_,NA_character_,NA_real_,NA_real_,ymd('2022-06-24')
 )
 
 # Save Daily Data ------------------------------------------------------------------
@@ -236,5 +237,8 @@ write_excel_csv(variables,'./share/variables')
 rmarkdown::render('./map.Rmd',output_file = paste0('../www/map/index.html'))
 
 rmarkdown::render('./index.Rmd',output_file = paste0('../www/index.html'))
+
+
+
 
 # git add . && git commit -m "update"
