@@ -228,5 +228,6 @@ DT::datatable(case.asym.wider.sh, extensions = 'Buttons',
             options = list(dom = 'Blfrtip',
                            buttons = c('copy', 'csv', 'excel'),
                            lengthMenu = list(c(10,25,50,-1),
-                                             c(10,25,50,"All"))))
+                                             c(10,25,50,"All")),
+                           order = list(list(1, 'desc'))))
 ```

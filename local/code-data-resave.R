@@ -45,7 +45,8 @@ map.1$data <- map(map.1$value,~read_csv(.x))
 
 map.2<-map.1 %>%
   unnest(cols=data) %>%
-  select(-value)
+  select(-value) %>%
+  drop_na()
 
 
 # save all data to database -----------------------------------------------

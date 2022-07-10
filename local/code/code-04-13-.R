@@ -7,21 +7,22 @@ library(janitor)
 library(here)
 library(geojsonio)
 future::plan(multisession)
+library(editData)
 
 rm(list=ls())
 # VARIABLE
 df.url<-readRDS('data/df.url.RDS')
 df.url<-df.url %>%
-  bind_rows(c(v.date='2022-06-24',
-            v.url.case='',
-            v.url.location='')) %>%
+  bind_rows(c(v.date='2022-07-09',
+            v.url.case='https://mp.weixin.qq.com/s/IYvoTgWM9l8lmNBe1OAhfQ',
+            v.url.location='https://mp.weixin.qq.com/s/exsx3D4y_Gam-vgta35dPA')) %>%
   distinct(v.date,.keep_all = T) %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
 
-tem.df<-filter(df.url,v.date=='2022-06-24')
-
+tem.df<-filter(df.url,v.date=='2022-07-09')
 v.date<-pull(tem.df,v.date)
+
 v.url.case<-pull(tem.df,v.url.case)
 v.url.location<-pull(tem.df,v.url.location)
 v.baiduapi<-'https://api.map.baidu.com/geocoding/v3/?address=ADDRESS&output=json&ak=GwzPkV44UAHW3f9gnhT80ZsLLy3zpSI6'
@@ -36,7 +37,7 @@ mf.tag <- function(tag,startRows,totalRow){
 
 html.case<-read_html(v.url.case)
 
-tag<-'p'
+tag<-'section'
 df.case.1<-data.frame(text=html.case %>% html_elements(tag) %>% html_text()) %>%
   filter(str_detect(text,pattern = "病例\\d+.*，居住于")) %>%
   separate(text, into= c("t1","t2",'t3'),sep= "，") %>%
@@ -61,25 +62,28 @@ df.asym.1<-data.frame(text=html.case %>% html_elements(tag) %>% html_text()) %>%
   filter(!is.na(district))
 
 # fill group
-df.case.1$group<-mf.tag(c('isolation'),c(1),dim(df.case.1)[1])
+df.case.1$group<-mf.tag(c('isolation','screen'),c(1,4),dim(df.case.1)[1])
 df.asym.1$group<-mf.tag(c('isolation'),c(1),dim(df.asym.1)[1])
 
-df.case.2 <-df.case.1 %>%
-  select(date,district,group,n)
 
-df.asym.2 <-df.asym.1 %>%
-  select(date,district,group,n)
+df.case.2 <-df.case.1 %>% select(date,district,group,n)
+df.asym.2 <-df.asym.1 %>% select(date,district,group,n)
 
 df.case.2 <- tribble(
   ~date,~district,~group,~n,
-  ymd('2022-06-24'),'宝山区','isolation',0,
+  ymd('2022-07-04'),'浦东新区','isolation',0,
 )
 df.asym.2 <- tribble(
  ~date,~district,~group,~n,
- ymd('2022-06-24'),'宝山区','isolation',0,
+ ymd('2022-07-04'),'普陀区','screen',0,
 )
 
+## 手动输入
+df.case.2 <- editData(df.case.2)
+df.asym.2 <- editData(df.asym.2)
 
+df.case.2
+df.asym.2
 # Location ----------------------------------------------------------------
 
 html.location<-read_html(v.url.location)
@@ -89,15 +93,19 @@ df.map.1<-html.location %>% html_elements('section > p ') %>% html_text() %>%
   rownames_to_column(var = 'id') %>%
   mutate(id=as.integer(id),
          wordcount=str_count(value),
-         districtIndex=str_detect(value,'2022年6月.+日')) %>%
+         districtIndex=str_detect(value,'2022年7月.+日')) %>%
   arrange(-wordcount)
+
+# df.map.1<-editData(df.map.1)
 
 df.map.2<-df.map.1 %>%
   filter(wordcount>2,
          !str_detect(value,'已对相关.+落实.+'),
          !str_detect(value,'各区信息如下'),
          !str_detect(value,'滑动查看更多'),
-         !str_detect(value,'市卫健委')) %>%
+         !str_detect(value,'市卫健委'),
+         !str_detect(value,'信息如下'),
+         !str_detect(value,'编辑：')) %>%
   arrange(id) %>%
   select(-id) %>%
   rownames_to_column(var = 'id') %>%
@@ -125,10 +133,10 @@ df.map.3 <- df.map.2 %>%
 df.map.4 <- df.map.3 %>%
   select(district,address,lng,lat,date)
 
-df.map.4 <- tribble(
- ~district,~address,~lng,~lat,~date,
- NA_character_,NA_character_,NA_real_,NA_real_,ymd('2022-06-24')
-)
+# df.map.4 <- tribble(
+#  ~district,~address,~lng,~lat,~date,
+#  NA_character_,NA_character_,NA_real_,NA_real_,ymd('2022-07-01')
+# )
 
 # Save Daily Data ------------------------------------------------------------------
 write_excel_csv(df.case.2,file = paste0('./data/df.case-',v.date,'.csv'))
@@ -215,7 +223,7 @@ variables<-data.frame(
 
 
 # Map Data Node js  -------------------------------------------------------
-
+# remove na
 write_json(map.2.all,here::here('data/database/map.2.all.json'))
 shell("cd ./go-transfer && ls -F && node index.js")
 
@@ -237,8 +245,6 @@ write_excel_csv(variables,'./share/variables')
 rmarkdown::render('./map.Rmd',output_file = paste0('../www/map/index.html'))
 
 rmarkdown::render('./index.Rmd',output_file = paste0('../www/index.html'))
-
-
 
 
 # git add . && git commit -m "update"
