@@ -11,7 +11,6 @@ output:
     source_code: "https://github.com/shalom-lab/covid.sh/blob/main/local/index.Rmd"
     includes:
        in_header: google_analytics.html
-
 ---
 
 ```{r setup, include=FALSE}
@@ -22,42 +21,44 @@ source('./code-rt.R',encoding='utf-8')
 source('./code-g2r.R',encoding = 'utf-8')
 ```
 
-
 # 全市
 
-Row {data-height=200}
---------------------------------------------------------------------
+## row {data-height="200"}
 
 ### 昨日新增确诊
+
 ```{r}
 valueBox(count.new.case, icon = "fa-comments",color="info")
 ```
 
 ### 昨日新增无症状
+
 ```{r}
 valueBox(count.new.asym, icon = "fa-comments",color="danger")
 ```
 
 ### 昨日净增阳性感染人数
+
 ```{r}
 valueBox(count.new.pos_real, icon = "fa-comments",color="primary")
 
 ```
 
 ### 累计确诊病例(自3月9日起)
+
 ```{r}
 valueBox(count.cum.case, icon = "fa-comments",color="warning")
 ```
 
 ### 累计阳性感染者(自3月9日起)
+
 ```{r}
 valueBox(count.cum.pos_real, icon = "fa-comments",color="success")
 ```
 
+## row {data-height="800"}
 
-row {data-height=800}
------------------------------------------------------------------------
-### 每日阳性感染者 数据摘自上海发布 更新于 `r format(Sys.time(), "%Y-%m-%d %X")`
+### 每日阳性感染者 数据摘自上海发布 更新于 `r format(Sys.time(), "%Y-%m-%d %X")` 网址：[rrr.is/covid](https://rrr.is/covid)
 
 ```{r}
 plot.sh.pos_real
@@ -71,13 +72,14 @@ plot.sh.cum_pos_real
 
 # 流行趋势
 
-### 时变再生数Rt [阅读原文](https://blog-7gi7tsfg85e1922f-1257749604.ap-shanghai.app.tcloudbase.com/posts/epi/covid-rt.html) { data-width=800 }
+### 时变再生数Rt [阅读原文](https://blog-7gi7tsfg85e1922f-1257749604.ap-shanghai.app.tcloudbase.com/posts/epi/covid-rt.html) {data-width="800"}
+
 ```{r}
 plot.rt
 
 ```
 
-### 系列间隔SI(假设) { data-width=400 }
+### 系列间隔SI(假设) {data-width="400"}
 
 ```{r}
 plot.si
@@ -86,10 +88,9 @@ plot.si
 
 # 新增及累计
 
-Column {.tabset}
------------------------------------------------------------------------
+## Column {.tabset}
 
-###  新增-分区
+### 新增-分区
 
 ```{r}
 plot.district.new
@@ -97,16 +98,18 @@ plot.district.new
 ```
 
 ### 累计-分区
+
 ```{r}
 plot.district.cum
 ```
-###  新增&累计
+
+### 新增&累计
 
 ```{r}
 plot.sh.line
 ```
 
-###  新增&累计
+### 新增&累计
 
 ```{r}
 plot.sh.bar
@@ -115,10 +118,10 @@ plot.sh.bar
 
 # 各区情况
 
+## Column {.tabset}
 
-Column { .tabset }
------------------------------------------------------------------------
 ### 净增阳性
+
 ```{r}
 g2r.pos_real
 ```
@@ -149,15 +152,12 @@ plot.timeline.cum
 plot.timeline.cum.bar
 ```
 
-
 # 构成情况
 
-    
-Row {data-height=500}
--------------------------------------
-    
+## Row {data-height="500"}
+
 ### 新增阳性
-    
+
 ```{r}
 prop.pos.new
 ```
@@ -166,26 +166,24 @@ prop.pos.new
 
 ```{r}
 prop.case.new
-```   
+```
 
 ### 新增无症状
 
 ```{r}
 prop.asym.new
-```   
+```
 
-Row {data-height=500}
--------------------------------------
+## Row {data-height="500"}
 
 ### 累计阳性
-    
+
 ```{r}
 prop.pos.cum
-``` 
+```
 
- 
 ### 累计病例
-    
+
 ```{r}
 prop.case.cum
 ```
@@ -194,27 +192,28 @@ prop.case.cum
 
 ```{r}
 prop.asym.cum
-```   
+```
 
 <!-- # 居住地信息 -->
 
 <!-- ```{r} -->
+
 <!-- plot.map.location -->
 
 <!-- ``` -->
 
 # 数据
 
-Column { .tabset }
-------------------------------------------------
+## Column {.tabset}
 
 ### 变量
+
 ```{r}
 DT::datatable(variables)
 ```
 
-
 ### 分区
+
 ```{r}
 DT::datatable(case.asym.wider,extensions = 'Buttons',
             options = list(dom = 'Blfrtip',
@@ -222,7 +221,9 @@ DT::datatable(case.asym.wider,extensions = 'Buttons',
                            lengthMenu = list(c(10,25,50,-1),
                                              c(10,25,50,"All"))))
 ```
+
 ### 全市
+
 ```{r}
 DT::datatable(case.asym.wider.sh, extensions = 'Buttons',
             options = list(dom = 'Blfrtip',
