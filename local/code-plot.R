@@ -86,12 +86,12 @@ groups<-names(map.2.new.sp) %>%
 pal <-colorFactor(c('#fff5eb','#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#8c2d04'),unique(groups$group.name))
 
 base <-leaflet() %>%
-  addTiles(options = providerTileOptions(minZoom = 8)) %>%
+  addTiles(options = providerTileOptions(minZoom = 2)) %>%
   setView(121.480473,lat = 31.235988,zoom = 9.3) %>%
-  setMaxBounds(lng1 = 121.480473 + .05,
-               lat1 = 31.235988 + .05,
-               lng2 = 121.480473 - .05,
-               lat2 = 31.235988 - .05)  %>%
+  # setMaxBounds(lng1 = 121.480473 + .05,
+  #              lat1 = 31.235988 + .05,
+  #              lng2 = 121.480473 - .05,
+  #              lat2 = 31.235988 - .05)  %>%
   addPolygons(data = shanghai,stroke = T, weight = 1,color = '#225ea8',smoothFactor = 0.3, fillOpacity = 0.3)
 
 base
