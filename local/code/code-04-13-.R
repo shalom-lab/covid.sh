@@ -20,7 +20,7 @@ df.url<-df.url %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
 
-tem.df<-filter(df.url,v.date=='2022-07-10')
+tem.df<-filter(df.url,v.date=='2022-07-11')
 v.date<-pull(tem.df,v.date)
 
 v.url.case<-pull(tem.df,v.url.case)
@@ -62,8 +62,8 @@ df.asym.1<-data.frame(text=html.case %>% html_elements(tag) %>% html_text()) %>%
   filter(!is.na(district))
 
 # fill group
-df.case.1$group<-mf.tag(c('isolation'),c(1),dim(df.case.1)[1])
-df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,11),dim(df.asym.1)[1])
+df.case.1$group<-mf.tag(c('isolation','screen'),c(1,4),dim(df.case.1)[1])
+df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,15),dim(df.asym.1)[1])
 
 
 df.case.2 <-df.case.1 %>% select(date,district,group,n)
