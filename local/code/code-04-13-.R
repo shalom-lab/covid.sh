@@ -13,9 +13,9 @@ rm(list=ls())
 # VARIABLE
 df.url<-readRDS('data/df.url.RDS')
 df.url<-df.url %>%
-  bind_rows(c(v.date='2022-07-10',
-            v.url.case='https://mp.weixin.qq.com/s/bmZ4ySBZbkpMYTFzWL69oA',
-            v.url.location='https://mp.weixin.qq.com/s/1f8ZPdgWXUCnaMM_EwaI5A')) %>%
+  bind_rows(c(v.date='2022-07-11',
+            v.url.case='https://mp.weixin.qq.com/s/yJv-ZxgpnuPg3BpmrDoU8A',
+            v.url.location='https://mp.weixin.qq.com/s/eFiTJyRQO6ZhxNKbBsfggQ')) %>%
   distinct(v.date,.keep_all = T) %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
@@ -37,7 +37,7 @@ mf.tag <- function(tag,startRows,totalRow){
 
 html.case<-read_html(v.url.case)
 
-tag<-'section'
+tag<-'p'
 df.case.1<-data.frame(text=html.case %>% html_elements(tag) %>% html_text()) %>%
   filter(str_detect(text,pattern = "病例\\d+.*，居住于")) %>%
   separate(text, into= c("t1","t2",'t3'),sep= "，") %>%
@@ -62,25 +62,25 @@ df.asym.1<-data.frame(text=html.case %>% html_elements(tag) %>% html_text()) %>%
   filter(!is.na(district))
 
 # fill group
-df.case.1$group<-mf.tag(c('isolation','screen'),c(1,4),dim(df.case.1)[1])
-df.asym.1$group<-mf.tag(c('isolation'),c(1),dim(df.asym.1)[1])
+df.case.1$group<-mf.tag(c('isolation'),c(1),dim(df.case.1)[1])
+df.asym.1$group<-mf.tag(c('isolation','screen'),c(1,11),dim(df.asym.1)[1])
 
 
 df.case.2 <-df.case.1 %>% select(date,district,group,n)
 df.asym.2 <-df.asym.1 %>% select(date,district,group,n)
 
-df.case.2 <- tribble(
-  ~date,~district,~group,~n,
-  ymd('2022-07-04'),'浦东新区','isolation',0,
-)
-df.asym.2 <- tribble(
- ~date,~district,~group,~n,
- ymd('2022-07-04'),'普陀区','screen',0,
-)
-
-## 手动输入
-df.case.2 <- editData(df.case.2)
-df.asym.2 <- editData(df.asym.2)
+# df.case.2 <- tribble(
+#   ~date,~district,~group,~n,
+#   ymd('2022-07-04'),'浦东新区','isolation',0,
+# )
+# df.asym.2 <- tribble(
+#  ~date,~district,~group,~n,
+#  ymd('2022-07-04'),'普陀区','screen',0,
+# )
+#
+# ## 手动输入
+# df.case.2 <- editData(df.case.2)
+# df.asym.2 <- editData(df.asym.2)
 
 df.case.2
 df.asym.2
