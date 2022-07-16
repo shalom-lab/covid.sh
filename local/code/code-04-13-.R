@@ -13,14 +13,14 @@ rm(list=ls())
 # VARIABLE
 df.url<-readRDS('data/df.url.RDS')
 df.url<-df.url %>%
-  bind_rows(c(v.date='2022-07-13',
-            v.url.case='https://mp.weixin.qq.com/s/qZprVdovmD7Ca2_c0PYF0w',
-            v.url.location='https://mp.weixin.qq.com/s/UviL3eGLHkBG37qhppSRzA')) %>%
+  bind_rows(c(v.date='2022-07-15',
+            v.url.case='https://mp.weixin.qq.com/s/RjuQmHTGK9T3AKC0YHYKeA',
+            v.url.location='https://mp.weixin.qq.com/s/5vXyOCCXlzPDBMcPCMov9w')) %>%
   distinct(v.date,.keep_all = T) %>%
   arrange(v.date)
 saveRDS(df.url,'data/df.url.RDS')
 
-tem.df<-filter(df.url,v.date=='2022-07-13')
+tem.df<-filter(df.url,v.date=='2022-07-15')
 v.date<-pull(tem.df,v.date)
 
 v.url.case<-pull(tem.df,v.url.case)
@@ -88,7 +88,7 @@ df.asym.2
 
 html.location<-read_html(v.url.location)
 
-df.map.1<-html.location %>% html_elements('section > p ') %>% html_text() %>%
+df.map.1<-html.location %>% html_elements('section > p') %>% html_text() %>%
   as_tibble() %>%
   rownames_to_column(var = 'id') %>%
   mutate(id=as.integer(id),
@@ -133,10 +133,10 @@ df.map.3 <- df.map.2 %>%
 df.map.4 <- df.map.3 %>%
   select(district,address,lng,lat,date)
 
-# df.map.4 <- tribble(
-#  ~district,~address,~lng,~lat,~date,
-#  NA_character_,NA_character_,NA_real_,NA_real_,ymd('2022-07-01')
-# )
+ # df.map.4 <- tribble(
+ #  ~district,~address,~lng,~lat,~date,
+ #  NA_character_,NA_character_,NA_real_,NA_real_,ymd('2022-07-15')
+ # )
 
 # Save Daily Data ------------------------------------------------------------------
 write_excel_csv(df.case.2,file = paste0('./data/df.case-',v.date,'.csv'))
